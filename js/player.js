@@ -2,6 +2,7 @@ let queue = []
 let index = 0
 let audio = null
 let els = null
+const trackChangeListeners = new Set()
 
 function formatTime(t) {
   if (!Number.isFinite(t)) return '0:00'
@@ -14,10 +15,29 @@ function currentTrack() {
   return queue[index] || null
 }
 
+export function getCurrentTrack() {
+  return currentTrack()
+}
+
+export function isPlaying() {
+  return !!audio && !audio.paused
+}
+
+export function onTrackChange(callback) {
+  trackChangeListeners.add(callback)
+  return () => trackChangeListeners.delete(callback)
+}
+
+function notifyTrackChange() {
+  const state = { track: currentTrack(), isPlaying: isPlaying() }
+  trackChangeListeners.forEach((cb) => cb(state))
+}
+
 function render() {
   const track = currentTrack()
   if (!track) {
     els.bar.classList.add('hidden')
+    notifyTrackChange()
     return
   }
   els.bar.classList.remove('hidden')
@@ -26,6 +46,7 @@ function render() {
   els.artist.textContent = track.artist || ''
   els.playIcon.classList.toggle('hidden', audio.paused === false)
   els.pauseIcon.classList.toggle('hidden', audio.paused === true)
+  notifyTrackChange()
 }
 
 function loadTrack() {

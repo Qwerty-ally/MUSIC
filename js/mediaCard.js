@@ -1,3 +1,5 @@
+import { songKey } from './songIdentity.js'
+
 export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, onClick, showPlayIcon = true, emptyIcon, emptyText }) {
   container.innerHTML = ''
 
@@ -12,6 +14,8 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
   items.forEach((item) => {
     const card = document.createElement('button')
     card.className = 'media-card'
+    const key = songKey(item)
+    if (key) card.dataset.songKey = key
     const seed = encodeURIComponent(item.id || getTitle(item))
     const image = getImage(item) || `https://api.dicebear.com/9.x/shapes/svg?seed=${seed}`
     const subtitle = getSubtitle ? getSubtitle(item) : ''
@@ -33,6 +37,16 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
   })
 
   container.appendChild(grid)
+}
+
+// Toggles a "now playing" look on any rendered card/row whose data-song-key
+// matches the currently playing track — shared by the Music grid and album
+// tracklists so the same song is highlighted everywhere it appears.
+export function highlightNowPlaying(container, currentTrack) {
+  const currentKey = songKey(currentTrack)
+  container.querySelectorAll('[data-song-key]').forEach((el) => {
+    el.classList.toggle('now-playing', !!currentKey && el.dataset.songKey === currentKey)
+  })
 }
 
 export function escapeHtml(str) {

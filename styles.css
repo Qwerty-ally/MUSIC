@@ -572,6 +572,19 @@ input, textarea {
 
 .btn-secondary:hover { background: #3a3a3a; }
 
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.btn-danger:hover { background: rgba(239, 68, 68, 0.3); color: #fff; }
+
 .select-input {
   width: 100%;
   background: #262626;
@@ -626,6 +639,24 @@ input, textarea {
 
 .album-track-remove:hover { color: #fff; background: #3a3a3a; }
 
+.album-track-file-label { flex-shrink: 0; cursor: pointer; }
+
+.album-track-file-status {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-track-file-label:hover .album-track-file-status { background: #3a3a3a; color: #fff; }
+
 /* ===== Image modal ===== */
 .image-modal-img {
   width: 100%;
@@ -640,12 +671,13 @@ input, textarea {
 .album-modal-inner { max-width: 480px; }
 
 .album-modal-cover {
-  width: 100%;
+  width: 160px;
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 8px;
   background: #282828;
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
+  display: block;
   box-shadow: 0 12px 24px rgba(0,0,0,0.5);
 }
 
@@ -708,12 +740,23 @@ input, textarea {
 
 .album-track-row:hover { background: rgba(255,255,255,0.05); }
 
+.album-track-row-playable { cursor: pointer; }
+
 .album-track-num { color: var(--text-muted); width: 20px; text-align: right; font-size: 12px; }
 
 .album-tracklist-locked .album-track-row {
   color: #666;
   pointer-events: none;
 }
+
+.album-track-row.now-playing { color: var(--accent-light); }
+.album-track-row.now-playing .album-track-num { color: var(--accent-light); }
+
+.album-modal-actions { display: flex; gap: 10px; }
+.album-modal-actions .btn-secondary, .album-modal-actions .btn-danger { flex: 1; }
+
+.media-card.now-playing .media-card-title { color: var(--accent-light); }
+.media-card.now-playing .media-card-play { opacity: 1; transform: translateY(0); background: var(--accent-light); }
 
 .album-tracklist-locked .album-track-num { color: #444; }
 

@@ -8,22 +8,47 @@ let els = null
 let editingId = null
 let existingCoverURL = ''
 
-function addTrackRow(name = '') {
+function addTrackRow(title = '', audioURL = '') {
   const row = document.createElement('div')
   row.className = 'album-track-row-input'
+  row.dataset.existingAudio = audioURL || ''
   row.innerHTML = `
-    <input type="text" class="album-track-name" placeholder="Track name" value="${name.replace(/"/g, '&quot;')}" />
+    <input type="text" class="album-track-name" placeholder="Track name" value="${title.replace(/"/g, '&quot;')}" />
+    <label class="album-track-file-label">
+      <input type="file" class="album-track-file" accept="audio/*" hidden />
+      <span class="album-track-file-status">${audioURL ? '&#9989; Audio attached' : 'Add audio'}</span>
+    </label>
     <button type="button" class="album-track-remove">&times;</button>
   `
+  row.querySelector('.album-track-file').addEventListener('change', (e) => {
+    const status = row.querySelector('.album-track-file-status')
+    const file = e.target.files[0]
+    status.textContent = file ? `\u{1F3B5} ${file.name}` : (row.dataset.existingAudio ? '✅ Audio attached' : 'Add audio')
+  })
   row.querySelector('.album-track-remove').addEventListener('click', () => row.remove())
   els.tracksList.appendChild(row)
 }
 
-function getTrackNames() {
-  return Array.from(els.tracksList.querySelectorAll('.album-track-name'))
-    .map((input) => input.value.trim())
-    .filter(Boolean)
-    .map((title) => ({ title }))
+async function collectTracks(onProgress) {
+  const rows = Array.from(els.tracksList.querySelectorAll('.album-track-row-input'))
+  const tracks = []
+  let uploaded = 0
+  const filesToUpload = rows.filter((row) => row.querySelector('.album-track-file').files[0]).length
+
+  for (const row of rows) {
+    const title = row.querySelector('.album-track-name').value.trim()
+    const file = row.querySelector('.album-track-file').files[0]
+    if (!title && !file) continue
+
+    let audioURL = row.dataset.existingAudio || ''
+    if (file) {
+      uploaded += 1
+      onProgress(uploaded, filesToUpload)
+      audioURL = await uploadMedia(file, () => {})
+    }
+    tracks.push({ title, audioURL })
+  }
+  return tracks
 }
 
 export function resetAlbumForm() {
@@ -46,8 +71,8 @@ export function populateAlbumFormForEdit(album) {
     : null
   els.releaseDateInput.value = releaseDate ? releaseDate.toISOString().slice(0, 10) : ''
   els.tracksList.innerHTML = ''
-  const tracks = album.tracks && album.tracks.length ? album.tracks : [{ title: '' }]
-  tracks.forEach((t) => addTrackRow(t.title))
+  const tracks = album.tracks && album.tracks.length ? album.tracks : [{ title: '', audioURL: '' }]
+  tracks.forEach((t) => addTrackRow(t.title, t.audioURL))
   els.submitBtn.textContent = 'Save Changes'
   els.progressWrap.classList.add('hidden')
 }
@@ -73,6 +98,7 @@ export function initAlbumForm() {
     const { user } = getState()
 
     els.submitBtn.disabled = true
+    const originalLabel = editingId ? 'Save Changes' : 'Create Album'
     try {
       let coverURL = existingCoverURL
       const coverFile = els.coverInput.files[0]
@@ -83,6 +109,12 @@ export function initAlbumForm() {
         })
       }
 
+      const tracks = await collectTracks((done, total) => {
+        els.progressWrap.classList.remove('hidden')
+        els.progressBar.style.width = `${Math.round((done / total) * 100)}%`
+        els.submitBtn.textContent = `Uploading track ${done} of ${total}…`
+      })
+
       const releaseDateValue = els.releaseDateInput.value ? new Date(els.releaseDateInput.value) : null
 
       const data = {
@@ -90,7 +122,7 @@ export function initAlbumForm() {
         type: els.typeInput.value,
         coverURL,
         releaseDate: releaseDateValue,
-        tracks: getTrackNames(),
+        tracks,
       }
 
       if (editingId) {
@@ -108,6 +140,7 @@ export function initAlbumForm() {
       resetAlbumForm()
     } catch (err) {
       showToast(err.message.replace('Firebase: ', ''), 'error')
+      els.submitBtn.textContent = originalLabel
     }
     els.submitBtn.disabled = false
   })
