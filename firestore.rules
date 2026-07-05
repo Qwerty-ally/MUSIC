@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    function isOwner() {
+      return isAuth() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'owner';
+    }
+
+    match /users/{userId} {
+      allow read: if isAuth();
+      // Anyone can create their own profile, but they cannot grant themselves
+      // the "owner" role after the fact (owner is only set once, at sign up,
+      // and the client already validated the secret code before this write).
+      allow create: if isAuth() && request.auth.uid == userId;
+      allow update: if isAuth() && request.auth.uid == userId && request.resource.data.role == resource.data.role;
+      allow delete: if false;
+    }
+
+    match /songs/{songId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /musicVideos/{videoId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /livePerformances/{videoId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /interviews/{videoId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /behindTheScenes/{videoId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /photos/{photoId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /albums/{albumId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+  }
+}

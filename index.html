@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANCHOR</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ===================== AUTH VIEW ===================== -->
+  <div id="auth-view" class="auth-view">
+    <div class="auth-wrap">
+      <div class="auth-logo">
+        <div class="auth-logo-badge">&#9875;</div>
+        <h1>ANCHOR</h1>
+        <p>Music, videos &amp; more for the group.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-mode-tabs">
+          <button type="button" class="auth-mode-tab active" data-mode="login">Sign In</button>
+          <button type="button" class="auth-mode-tab" data-mode="signup">Sign Up</button>
+        </div>
+
+        <div id="auth-role-section" class="auth-role-section hidden">
+          <p class="field-label">Account Type</p>
+          <div class="role-grid">
+            <button type="button" class="role-card selected" data-role="normal">
+              <span class="role-icon">&#128101;</span>
+              <span class="role-title">Normal</span>
+              <span class="role-desc">Listen &amp; watch everything.</span>
+            </button>
+            <button type="button" class="role-card" data-role="owner">
+              <span class="role-icon role-icon-owner">&#128081;</span>
+              <span class="role-title">Owner</span>
+              <span class="role-desc">Upload songs &amp; videos. Needs code.</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="auth-form" class="auth-form">
+          <div id="auth-displayname-field" class="field hidden">
+            <input id="auth-displayname" type="text" placeholder="Display name" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <input id="auth-email" type="email" placeholder="Email" autocomplete="email" required />
+          </div>
+
+          <div class="field field-with-button">
+            <input id="auth-password" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required />
+            <button type="button" id="auth-toggle-password" class="field-icon-btn">&#128065;</button>
+          </div>
+
+          <div id="auth-ownercode-field" class="field field-owner hidden">
+            <input id="auth-ownercode" type="password" placeholder="Owner secret code" />
+          </div>
+
+          <button type="submit" id="auth-submit" class="btn-primary btn-block">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== APP VIEW ===================== -->
+  <div id="app-view" class="app-view hidden">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-badge">&#9875;</div>
+        <span>ANCHOR</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-route="music">
+          <span class="sidebar-link-icon">&#127925;</span> Music
+        </button>
+        <button class="sidebar-link" data-route="music-videos">
+          <span class="sidebar-link-icon">&#127916;</span> Music Videos
+        </button>
+        <button class="sidebar-link" data-route="live-performances">
+          <span class="sidebar-link-icon">&#127908;</span> Live Performances
+        </button>
+        <button class="sidebar-link" data-route="interviews">
+          <span class="sidebar-link-icon">&#127897;</span> Interviews
+        </button>
+        <button class="sidebar-link" data-route="behind-the-scenes">
+          <span class="sidebar-link-icon">&#127916;</span> Behind the Scenes
+        </button>
+        <button class="sidebar-link" data-route="photos">
+          <span class="sidebar-link-icon">&#128247;</span> Photos
+        </button>
+        <button class="sidebar-link" data-route="albums">
+          <span class="sidebar-link-icon">&#128191;</span> Albums
+        </button>
+        <button id="sidebar-upload-link" class="sidebar-link hidden" data-route="upload">
+          <span class="sidebar-link-icon">&#11014;</span> Upload
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <span id="sidebar-owner-badge" class="owner-badge hidden" title="Owner">&#128081;</span>
+          <span id="sidebar-username">Loading&hellip;</span>
+        </div>
+        <button id="sidebar-logout" class="sidebar-logout">Log out</button>
+      </div>
+    </aside>
+
+    <div class="main-col">
+      <main class="main-content">
+
+        <section id="view-music" class="view">
+          <h1>Music</h1>
+          <p id="music-loading" class="loading-text">Loading songs&hellip;</p>
+          <div id="music-grid"></div>
+        </section>
+
+        <section id="view-music-videos" class="view hidden">
+          <h1>Music Videos</h1>
+          <p id="music-videos-loading" class="loading-text">Loading music videos&hellip;</p>
+          <div id="music-videos-grid"></div>
+        </section>
+
+        <section id="view-live-performances" class="view hidden">
+          <h1>Live Performances</h1>
+          <p id="live-performances-loading" class="loading-text">Loading live performances&hellip;</p>
+          <div id="live-performances-grid"></div>
+        </section>
+
+        <section id="view-interviews" class="view hidden">
+          <h1>Interviews</h1>
+          <p id="interviews-loading" class="loading-text">Loading interviews&hellip;</p>
+          <div id="interviews-grid"></div>
+        </section>
+
+        <section id="view-behind-the-scenes" class="view hidden">
+          <h1>Behind the Scenes</h1>
+          <p id="behind-the-scenes-loading" class="loading-text">Loading&hellip;</p>
+          <div id="behind-the-scenes-grid"></div>
+        </section>
+
+        <section id="view-photos" class="view hidden">
+          <h1>Photos</h1>
+          <p id="photos-loading" class="loading-text">Loading photos&hellip;</p>
+          <div id="photos-grid"></div>
+        </section>
+
+        <section id="view-albums" class="view hidden">
+          <h1>Albums</h1>
+          <p id="albums-loading" class="loading-text">Loading albums&hellip;</p>
+          <div id="albums-grid"></div>
+        </section>
+
+        <section id="view-upload" class="view hidden">
+          <h1><span class="upload-icon">&#11014;</span> Upload</h1>
+
+          <div class="upload-tabs">
+            <button type="button" class="upload-tab active" data-tab="song">Song</button>
+            <button type="button" class="upload-tab" data-tab="musicVideo">Music Video</button>
+            <button type="button" class="upload-tab" data-tab="livePerformance">Live Performance</button>
+            <button type="button" class="upload-tab" data-tab="interview">Interview</button>
+            <button type="button" class="upload-tab" data-tab="behindTheScenes">Behind the Scenes</button>
+            <button type="button" class="upload-tab" data-tab="photo">Photo</button>
+            <button type="button" class="upload-tab" data-tab="album">Album / EP</button>
+          </div>
+
+          <form id="upload-form" class="upload-form">
+            <div class="field">
+              <label class="field-label">Title</label>
+              <input id="upload-title" type="text" placeholder="Title" required />
+            </div>
+
+            <div id="upload-artist-field" class="field">
+              <label class="field-label">Artist</label>
+              <input id="upload-artist" type="text" placeholder="Artist name" required />
+            </div>
+
+            <div id="upload-desc-field" class="field hidden">
+              <label class="field-label">Description (optional)</label>
+              <textarea id="upload-desc" rows="3" placeholder="What's this about?"></textarea>
+            </div>
+
+            <div class="field">
+              <label id="upload-file-label" class="field-label">Audio file</label>
+              <input id="upload-file" type="file" accept="audio/*" required />
+            </div>
+
+            <div id="upload-cover-field" class="field">
+              <label id="upload-cover-label" class="field-label">Cover image (optional)</label>
+              <input id="upload-cover" type="file" accept="image/*" />
+            </div>
+
+            <div id="upload-progress-wrap" class="progress-wrap hidden">
+              <div class="progress-track"><div id="upload-progress-bar" class="progress-bar"></div></div>
+            </div>
+
+            <button type="submit" id="upload-submit" class="btn-primary btn-block">Upload Song</button>
+          </form>
+
+          <form id="album-form" class="upload-form hidden">
+            <div class="field">
+              <label class="field-label">Type</label>
+              <select id="album-type" class="select-input">
+                <option value="album">Album</option>
+                <option value="ep">EP</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Title</label>
+              <input id="album-title" type="text" placeholder="Album / EP title" required />
+            </div>
+
+            <div class="field">
+              <label class="field-label">Release date (optional)</label>
+              <input id="album-release-date" type="date" />
+              <p class="field-hint">Leave blank if it's already out. Set a future date to show a countdown and lock the tracklist until then.</p>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Cover image</label>
+              <input id="album-cover" type="file" accept="image/*" />
+            </div>
+
+            <div class="field">
+              <label class="field-label">Tracks</label>
+              <div id="album-tracks-list" class="album-tracks-list"></div>
+              <button type="button" id="album-add-track" class="btn-secondary">+ Add track</button>
+            </div>
+
+            <div id="album-progress-wrap" class="progress-wrap hidden">
+              <div class="progress-track"><div id="album-progress-bar" class="progress-bar"></div></div>
+            </div>
+
+            <button type="submit" id="album-submit" class="btn-primary btn-block">Create Album</button>
+          </form>
+        </section>
+
+      </main>
+
+      <!-- ===================== PLAYER BAR ===================== -->
+      <div id="player-bar" class="player-bar hidden">
+        <audio id="audio-el"></audio>
+
+        <div class="player-track-info">
+          <img id="player-cover" src="" alt="" />
+          <div class="player-track-text">
+            <p id="player-title"></p>
+            <p id="player-artist"></p>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <div class="player-buttons">
+            <button id="player-prev" class="player-ctrl-btn">&#9198;</button>
+            <button id="player-playpause" class="player-play-btn">
+              <span id="player-play-icon">&#9654;</span>
+              <span id="player-pause-icon" class="hidden">&#10074;&#10074;</span>
+            </button>
+            <button id="player-next" class="player-ctrl-btn">&#9197;</button>
+          </div>
+          <div class="player-seek">
+            <span id="player-current-time">0:00</span>
+            <input id="player-progress" type="range" min="0" max="0" value="0" class="range" />
+            <span id="player-duration">0:00</span>
+          </div>
+        </div>
+
+        <div class="player-volume-wrap">
+          <span>&#128266;</span>
+          <input id="player-volume" type="range" min="0" max="1" step="0.01" value="0.8" class="range" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== VIDEO MODAL ===================== -->
+  <div id="video-modal" class="video-modal hidden">
+    <div class="video-modal-inner">
+      <div class="video-modal-header">
+        <div>
+          <p id="video-modal-title" class="video-modal-title"></p>
+          <p id="video-modal-subtitle" class="video-modal-subtitle"></p>
+        </div>
+        <button id="video-modal-close" class="video-modal-close">&times;</button>
+      </div>
+      <video id="video-modal-player" controls></video>
+      <p id="video-modal-desc" class="video-modal-desc"></p>
+    </div>
+  </div>
+
+  <!-- ===================== IMAGE MODAL ===================== -->
+  <div id="image-modal" class="video-modal hidden">
+    <div class="video-modal-inner">
+      <div class="video-modal-header">
+        <div>
+          <p id="image-modal-title" class="video-modal-title"></p>
+          <p id="image-modal-caption" class="video-modal-subtitle"></p>
+        </div>
+        <button id="image-modal-close" class="video-modal-close">&times;</button>
+      </div>
+      <img id="image-modal-img" class="image-modal-img" src="" alt="" />
+    </div>
+  </div>
+
+  <!-- ===================== ALBUM MODAL ===================== -->
+  <div id="album-modal" class="video-modal hidden">
+    <div class="video-modal-inner album-modal-inner">
+      <div class="video-modal-header">
+        <div>
+          <p id="album-modal-title" class="video-modal-title"></p>
+          <p id="album-modal-type" class="video-modal-subtitle"></p>
+        </div>
+        <button id="album-modal-close" class="video-modal-close">&times;</button>
+      </div>
+
+      <img id="album-modal-cover" class="album-modal-cover" src="" alt="" />
+
+      <div id="album-modal-countdown" class="album-countdown hidden">
+        <p class="album-countdown-label">Releasing in</p>
+        <div class="album-countdown-timer">
+          <div class="album-countdown-unit"><span id="album-cd-days">0</span><small>days</small></div>
+          <div class="album-countdown-unit"><span id="album-cd-hours">0</span><small>hrs</small></div>
+          <div class="album-countdown-unit"><span id="album-cd-mins">0</span><small>min</small></div>
+          <div class="album-countdown-unit"><span id="album-cd-secs">0</span><small>sec</small></div>
+        </div>
+      </div>
+
+      <div id="album-modal-tracks" class="album-tracklist"></div>
+
+      <button id="album-modal-edit" class="btn-secondary hidden">Edit Album</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
