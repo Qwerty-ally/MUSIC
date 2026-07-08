@@ -48,6 +48,10 @@ onAuthChange(({ user }) => {
       collectionName: 'behindTheScenes', gridId: 'behind-the-scenes-grid', loadingId: 'behind-the-scenes-loading',
       subtitleField: 'description', emptyIcon: clapperIcon, emptyText: 'No behind-the-scenes videos uploaded yet.',
     })
+    initVideoCollectionPage({
+      collectionName: 'otherVideos', gridId: 'other-grid', loadingId: 'other-loading',
+      subtitleField: 'description', emptyIcon: clapperIcon, emptyText: 'No videos uploaded yet.',
+    })
     initPhotosPage()
     initAlbumsPage()
     initUploadPage()

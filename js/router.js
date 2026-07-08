@@ -1,6 +1,6 @@
 import { onAuthChange, signOut } from './auth.js'
 
-const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'photos', 'albums', 'upload']
+const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'photos', 'albums', 'other', 'upload']
 
 function currentRoute() {
   const hash = location.hash.replace('#/', '')
