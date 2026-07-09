@@ -7,7 +7,7 @@ import { initAlbumForm, resetAlbumForm, populateAlbumFormForEdit } from './album
 import { onAlbumEditRequested } from './albumModal.js'
 
 const TABS = {
-  song: { label: 'Song', collection: 'songs', accept: 'audio/*', fileField: 'audioURL', fileLabel: 'Audio file', useArtist: true },
+  song: { label: 'Song', collection: 'songs', accept: 'audio/*', fileField: 'audioURL', fileLabel: 'Audio file', useArtist: true, useReleaseDate: true },
   musicVideo: { label: 'Music Video', collection: 'musicVideos', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useArtist: true },
   livePerformance: { label: 'Live Performance', collection: 'livePerformances', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useArtist: true },
   interview: { label: 'Interview', collection: 'interviews', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useDesc: true },
@@ -38,6 +38,7 @@ function updateFormForTab() {
   els.descField.classList.toggle('hidden', !tab.useDesc)
   els.descField.querySelector('label').textContent = tab.descLabel || 'Description (optional)'
   els.coverField.classList.toggle('hidden', !!tab.noCover)
+  els.releaseDateField.classList.toggle('hidden', !tab.useReleaseDate)
   els.fileLabel.textContent = tab.fileLabel
   els.fileInput.accept = tab.accept
   els.coverLabel.textContent = currentTab === 'song' ? 'Cover image (optional)' : 'Thumbnail (optional)'
@@ -67,6 +68,8 @@ export function initUploadPage() {
     fileInput: document.getElementById('upload-file'),
     coverLabel: document.getElementById('upload-cover-label'),
     coverInput: document.getElementById('upload-cover'),
+    releaseDateField: document.getElementById('upload-release-date-field'),
+    releaseDateInput: document.getElementById('upload-release-date'),
     submitBtn: document.getElementById('upload-submit'),
     progressWrap: document.getElementById('upload-progress-wrap'),
     progressBar: document.getElementById('upload-progress-bar'),
@@ -118,6 +121,7 @@ export function initUploadPage() {
       }
       if (tab.useArtist) data.artist = els.artistInput.value
       if (tab.useDesc) data[tab.descFieldName || 'description'] = els.descInput.value
+      if (tab.useReleaseDate) data.releaseDate = els.releaseDateInput.value ? new Date(els.releaseDateInput.value) : null
       if (currentTab === 'song') data.coverURL = coverURL
       else if (!tab.noCover) data.thumbnailURL = coverURL
 

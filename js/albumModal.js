@@ -1,7 +1,7 @@
 import { doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js'
 import { db } from './firebase.js'
 import { getState } from './auth.js'
-import { getReleaseDate, isUpcoming } from './albumUtils.js'
+import { getReleaseDate, isUpcoming } from './releaseUtils.js'
 import { escapeHtml, highlightNowPlaying } from './mediaCard.js'
 import { playSong, onTrackChange, getCurrentTrack } from './player.js'
 import { showToast } from './toast.js'

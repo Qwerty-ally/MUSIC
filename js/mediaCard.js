@@ -1,6 +1,6 @@
 import { songKey } from './songIdentity.js'
 
-export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, onClick, showPlayIcon = true, emptyIcon, emptyText }) {
+export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, isDisabled, onClick, onDisabledClick, showPlayIcon = true, emptyIcon, emptyText }) {
   container.innerHTML = ''
 
   if (!items.length) {
@@ -12,8 +12,9 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
   grid.className = 'media-grid'
 
   items.forEach((item) => {
+    const disabled = isDisabled ? isDisabled(item) : false
     const card = document.createElement('button')
-    card.className = 'media-card'
+    card.className = `media-card${disabled ? ' media-card-disabled' : ''}`
     const key = songKey(item)
     if (key) card.dataset.songKey = key
     const seed = encodeURIComponent(item.id || getTitle(item))
@@ -23,7 +24,7 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
     card.innerHTML = `
       <div class="media-card-art">
         <img src="${image}" alt="" loading="lazy" />
-        ${showPlayIcon ? `
+        ${showPlayIcon && !disabled ? `
         <div class="media-card-play">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M8 5v14l11-7z"/></svg>
         </div>` : ''}
@@ -32,7 +33,7 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
       ${subtitle ? `<p class="media-card-subtitle">${escapeHtml(subtitle)}</p>` : ''}
       ${badge ? `<p class="media-card-badge">${escapeHtml(badge)}</p>` : ''}
     `
-    card.addEventListener('click', () => onClick(item))
+    card.addEventListener('click', () => (disabled ? onDisabledClick && onDisabledClick(item) : onClick(item)))
     grid.appendChild(card)
   })
 

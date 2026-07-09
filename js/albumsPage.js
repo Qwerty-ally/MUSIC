@@ -2,7 +2,7 @@ import { collection, onSnapshot, orderBy, query } from 'https://www.gstatic.com/
 import { db } from './firebase.js'
 import { renderGrid } from './mediaCard.js'
 import { openAlbumModal } from './albumModal.js'
-import { isUpcoming } from './albumUtils.js'
+import { isUpcoming } from './releaseUtils.js'
 
 const albumIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>'
 

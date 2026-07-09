@@ -351,6 +351,11 @@ input, textarea {
   padding: 3px 8px;
 }
 
+.media-card-disabled .media-card-art img { opacity: 0.4; }
+.media-card-disabled .media-card-title,
+.media-card-disabled .media-card-subtitle { color: #666; }
+.media-card-disabled:hover { background: var(--card); }
+
 /* ===== Upload page ===== */
 .upload-icon { color: var(--accent); }
 
