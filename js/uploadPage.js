@@ -48,6 +48,10 @@ function updateFormForTab() {
 
   const tab = TABS[currentTab]
   els.artistField.classList.toggle('hidden', !tab.useArtist)
+  // A required field that's hidden blocks native form submission entirely
+  // (silently — no error reaches our submit handler), so required must
+  // track visibility here.
+  els.artistInput.required = !!tab.useArtist
   els.descField.classList.toggle('hidden', !tab.useDesc)
   els.descField.querySelector('label').textContent = tab.descLabel || 'Description (optional)'
   els.coverField.classList.toggle('hidden', !!tab.noCover)
