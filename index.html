@@ -104,6 +104,9 @@
         <button id="sidebar-payout-link" class="sidebar-link hidden" data-route="payout">
           <span class="sidebar-link-icon">&#128176;</span> Payout
         </button>
+        <button id="sidebar-stats-link" class="sidebar-link hidden" data-route="stats">
+          <span class="sidebar-link-icon">&#128202;</span> Stats
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -286,6 +289,12 @@
           <p class="field-hint">Every song play (including album tracks) is worth $1. Every Music Video play is worth $5. Totals update live for the whole group.</p>
         </section>
 
+        <section id="view-stats" class="view hidden">
+          <h1><span class="stats-icon">&#128202;</span> Stats</h1>
+          <p id="stats-loading" class="loading-text">Loading users&hellip;</p>
+          <div id="stats-list" class="user-list"></div>
+        </section>
+
       </main>
 
       <!-- ===================== PLAYER BAR ===================== -->
@@ -382,6 +391,38 @@
         <button id="album-modal-edit" class="btn-secondary">Edit Album</button>
         <button id="album-modal-delete" class="btn-danger">Delete Album</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ===================== USER DETAIL MODAL ===================== -->
+  <div id="user-modal" class="video-modal hidden">
+    <div class="video-modal-inner">
+      <div class="video-modal-header">
+        <div>
+          <p id="user-modal-name" class="video-modal-title"></p>
+          <p id="user-modal-email" class="video-modal-subtitle"></p>
+        </div>
+        <button id="user-modal-close" class="video-modal-close">&times;</button>
+      </div>
+
+      <p id="user-modal-banned-notice" class="user-banned-notice hidden">&#128683; This user is currently kicked and cannot sign in.</p>
+
+      <div class="user-modal-stats">
+        <div class="user-modal-stat">
+          <p class="payout-total-label">Role</p>
+          <span id="user-modal-role" class="user-row-badge"></span>
+        </div>
+        <div class="user-modal-stat">
+          <p class="payout-total-label">Joined</p>
+          <p id="user-modal-joined"></p>
+        </div>
+        <div class="user-modal-stat">
+          <p class="payout-total-label">Minutes Listened/Watched</p>
+          <p id="user-modal-minutes" class="user-modal-minutes-value"></p>
+        </div>
+      </div>
+
+      <button id="user-modal-kick" class="btn-danger btn-block">Kick</button>
     </div>
   </div>
 

@@ -37,7 +37,12 @@ onAuthStateChanged(auth, (firebaseUser) => {
   if (firebaseUser) {
     const ref = doc(db, 'users', firebaseUser.uid)
     profileUnsub = onSnapshot(ref, (snap) => {
-      currentProfile = snap.exists() ? { id: snap.id, ...snap.data() } : null
+      const data = snap.exists() ? snap.data() : null
+      if (data?.banned) {
+        firebaseSignOut(auth)
+        return
+      }
+      currentProfile = data ? { id: snap.id, ...data } : null
       notify()
     }, () => notify())
   } else {

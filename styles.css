@@ -407,6 +407,83 @@ input, textarea {
 .payout-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 .payout-row-amount { font-size: 18px; font-weight: 700; color: #4ade80; }
 
+/* ===== Stats page ===== */
+.stats-icon { color: #a78bfa; }
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 640px;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--card);
+  border-radius: 10px;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.user-row:hover { background: var(--card-hover); }
+
+.user-row-banned { opacity: 0.5; }
+
+.user-row-info { flex: 1; min-width: 0; }
+
+.user-row-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-row-you { color: var(--text-muted); font-weight: 400; }
+.user-row-email { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.user-row-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+
+.user-row-badge-owner { color: var(--amber); background: rgba(251, 191, 36, 0.12); }
+
+.user-row-minutes { font-size: 13px; color: var(--text-muted); flex-shrink: 0; width: 70px; text-align: right; }
+
+.user-row-banned-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border-radius: 999px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+
+.user-banned-notice {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #f87171;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.user-modal-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.user-modal-stat { background: var(--card); border-radius: 10px; padding: 12px; text-align: center; }
+.user-modal-minutes-value { font-size: 18px; font-weight: 700; color: #4ade80; }
+
 /* ===== Upload page ===== */
 .upload-icon { color: var(--accent); }
 

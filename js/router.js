@@ -1,7 +1,7 @@
 import { onAuthChange, signOut } from './auth.js'
 
-const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'photos', 'albums', 'other', 'upload', 'payout']
-const OWNER_ONLY_ROUTES = ['upload', 'payout']
+const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'photos', 'albums', 'other', 'upload', 'payout', 'stats']
+const OWNER_ONLY_ROUTES = ['upload', 'payout', 'stats']
 
 function currentRoute() {
   const hash = location.hash.replace('#/', '')
@@ -24,6 +24,7 @@ export function initRouter() {
   const appView = document.getElementById('app-view')
   const uploadLink = document.getElementById('sidebar-upload-link')
   const payoutLink = document.getElementById('sidebar-payout-link')
+  const statsLink = document.getElementById('sidebar-stats-link')
   const userName = document.getElementById('sidebar-username')
   const ownerBadge = document.getElementById('sidebar-owner-badge')
   const logoutBtn = document.getElementById('sidebar-logout')
@@ -43,6 +44,7 @@ export function initRouter() {
     appView.classList.remove('hidden')
     uploadLink.classList.toggle('hidden', !isOwner)
     payoutLink.classList.toggle('hidden', !isOwner)
+    statsLink.classList.toggle('hidden', !isOwner)
     userName.textContent = profile?.displayName || 'Loading…'
     ownerBadge.classList.toggle('hidden', !isOwner)
 

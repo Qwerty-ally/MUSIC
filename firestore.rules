@@ -16,7 +16,14 @@ service cloud.firestore {
       // the "owner" role after the fact (owner is only set once, at sign up,
       // and the client already validated the secret code before this write).
       allow create: if isAuth() && request.auth.uid == userId;
-      allow update: if isAuth() && request.auth.uid == userId && request.resource.data.role == resource.data.role;
+      // A user can update their own doc (role is immutable after signup —
+      // needed for the secondsListened ticks from userTracking.js).
+      // An owner can also kick/unkick *someone else* by flipping only the
+      // "banned" field — nothing else about another user's doc is writable.
+      allow update: if isAuth() && (
+        (request.auth.uid == userId && request.resource.data.role == resource.data.role) ||
+        (isOwner() && request.auth.uid != userId && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['banned']))
+      );
       allow delete: if false;
     }
 
