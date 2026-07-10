@@ -32,10 +32,11 @@ export function onPayoutChange(callback) {
 
 // Claims the current running total: logs it to payoutHistory, then zeroes
 // the live counters so the next total starts fresh from $0.
-export async function claimPayout({ amount, songPlays, videoPlays }) {
+// Takes the same shape onPayoutChange hands back ({ grandTotal, songPlays, videoPlays, ... }).
+export async function claimPayout({ grandTotal, songPlays, videoPlays }) {
   const { user, profile } = getState()
   await addDoc(collection(db, 'payoutHistory'), {
-    amount,
+    amount: grandTotal,
     songPlays,
     videoPlays,
     claimedBy: user.uid,
