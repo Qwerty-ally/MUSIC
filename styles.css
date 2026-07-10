@@ -280,6 +280,7 @@ input, textarea {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
+  align-items: start;
 }
 
 .media-card {
@@ -303,6 +304,13 @@ input, textarea {
   background: #282828;
   box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   display: block;
+}
+
+/* Video/photo-group thumbnails show at their real aspect ratio instead of
+   being force-cropped to a square. */
+.media-card-art-natural img {
+  aspect-ratio: auto;
+  height: auto;
 }
 
 .media-card-play {

@@ -6,7 +6,7 @@ const downloadedIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="cu
 const spinnerIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" class="spin"><circle cx="12" cy="12" r="9" stroke-opacity="0.25"/><path d="M21 12a9 9 0 0 0-9-9"/></svg>'
 const deleteIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 7h12l-1 13.5a1.5 1.5 0 0 1-1.5 1.5h-7a1.5 1.5 0 0 1-1.5-1.5L6 7zm3-3.5A1.5 1.5 0 0 1 10.5 2h3A1.5 1.5 0 0 1 15 3.5V5h4v2H5V5h4V3.5z"/></svg>'
 
-export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, isDisabled, onClick, onDisabledClick, showPlayIcon = true, showDownload = false, getDownloadUrl, showDelete = false, onDelete, emptyIcon, emptyText }) {
+export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, isDisabled, onClick, onDisabledClick, showPlayIcon = true, showDownload = false, getDownloadUrl, showDelete = false, onDelete, squareArt = true, emptyIcon, emptyText }) {
   container.innerHTML = ''
 
   if (!items.length) {
@@ -29,7 +29,7 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
     const badge = getBadge ? getBadge(item) : ''
     const downloadUrl = showDownload && !disabled ? (getDownloadUrl ? getDownloadUrl(item) : item.audioURL) : null
     card.innerHTML = `
-      <div class="media-card-art">
+      <div class="media-card-art${squareArt ? '' : ' media-card-art-natural'}">
         <img src="${image}" alt="" loading="lazy" />
         ${showPlayIcon && !disabled ? `
         <div class="media-card-play">

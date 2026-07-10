@@ -19,6 +19,7 @@ export function initPhotoGroupPage({ collectionName, gridId, loadingId, emptyIco
       getSubtitle: (g) => `${(g.images || []).length} photo${(g.images || []).length === 1 ? '' : 's'}`,
       onClick: (group) => openPhotoGroupModal(group),
       showPlayIcon: false,
+      squareArt: false,
       emptyIcon,
       emptyText,
     })

@@ -19,6 +19,7 @@ export function initVideoCollectionPage({ collectionName, gridId, loadingId, sub
       getTitle: (v) => v.title,
       getSubtitle: (v) => v[subtitleField],
       onClick: (video) => openVideoModal(video),
+      squareArt: false,
       emptyIcon,
       emptyText,
     })
