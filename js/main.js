@@ -12,6 +12,8 @@ import { initVideoCollectionPage } from './videoCollectionPage.js'
 import { initPhotosPage } from './photosPage.js'
 import { initAlbumsPage } from './albumsPage.js'
 import { initUploadPage } from './uploadPage.js'
+import { initPayoutPage } from './payoutPage.js'
+import { recordVideoPlay } from './payout.js'
 
 const clapperIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M2 10v10h20V10H2zm18-6h-3.2l2 3h-2.4l-2-3h-2l2 3h-2.4l-2-3h-2l2 3H7.6l-2-3H2v4h20V4z"/></svg>'
 const micIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>'
@@ -34,7 +36,7 @@ onAuthChange(({ user }) => {
     initMusicPage()
     initVideoCollectionPage({
       collectionName: 'musicVideos', gridId: 'music-videos-grid', loadingId: 'music-videos-loading',
-      subtitleField: 'artist', emptyIcon: clapperIcon, emptyText: 'No music videos uploaded yet.',
+      subtitleField: 'artist', emptyIcon: clapperIcon, emptyText: 'No music videos uploaded yet.', onPlay: recordVideoPlay,
     })
     initVideoCollectionPage({
       collectionName: 'livePerformances', gridId: 'live-performances-grid', loadingId: 'live-performances-loading',
@@ -55,5 +57,6 @@ onAuthChange(({ user }) => {
     initPhotosPage()
     initAlbumsPage()
     initUploadPage()
+    initPayoutPage()
   }
 })

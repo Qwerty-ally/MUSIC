@@ -356,6 +356,57 @@ input, textarea {
 .media-card-disabled .media-card-subtitle { color: #666; }
 .media-card-disabled:hover { background: var(--card); }
 
+/* ===== Payout page ===== */
+.payout-icon { color: #4ade80; }
+
+.payout-total-card {
+  max-width: 420px;
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.15), rgba(74, 222, 128, 0.03));
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.payout-total-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.payout-total-amount {
+  font-size: 44px;
+  font-weight: 800;
+  color: #4ade80;
+}
+
+.payout-breakdown {
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.payout-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+}
+
+.payout-row + .payout-row { border-top: 1px solid var(--border); }
+
+.payout-row-title { font-size: 14px; font-weight: 600; }
+.payout-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.payout-row-amount { font-size: 18px; font-weight: 700; color: #4ade80; }
+
 /* ===== Upload page ===== */
 .upload-icon { color: var(--accent); }
 

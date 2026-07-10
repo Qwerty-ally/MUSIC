@@ -59,5 +59,13 @@ service cloud.firestore {
       allow read: if isAuth();
       allow create, update, delete: if isOwner();
     }
+
+    match /stats/payout {
+      // Any signed-in listener's plays increment this doc; only owners can
+      // see the running total.
+      allow read: if isOwner();
+      allow create, update: if isAuth();
+      allow delete: if false;
+    }
   }
 }

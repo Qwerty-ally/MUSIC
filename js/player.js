@@ -1,3 +1,5 @@
+import { recordSongPlay } from './payout.js'
+
 let queue = []
 let index = 0
 let audio = null
@@ -54,6 +56,7 @@ function loadTrack() {
   if (!track) return
   audio.src = track.audioURL
   audio.play().catch(() => {})
+  recordSongPlay()
   render()
 }
 

@@ -101,6 +101,9 @@
         <button id="sidebar-upload-link" class="sidebar-link hidden" data-route="upload">
           <span class="sidebar-link-icon">&#11014;</span> Upload
         </button>
+        <button id="sidebar-payout-link" class="sidebar-link hidden" data-route="payout">
+          <span class="sidebar-link-icon">&#128176;</span> Payout
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -253,6 +256,34 @@
 
             <button type="submit" id="album-submit" class="btn-primary btn-block">Create Album</button>
           </form>
+        </section>
+
+        <section id="view-payout" class="view hidden">
+          <h1><span class="payout-icon">&#128176;</span> Payout</h1>
+
+          <div class="payout-total-card">
+            <p class="payout-total-label">Total Earned</p>
+            <p id="payout-total" class="payout-total-amount">$0.00</p>
+          </div>
+
+          <div class="payout-breakdown">
+            <div class="payout-row">
+              <div>
+                <p class="payout-row-title">Song plays</p>
+                <p id="payout-song-count" class="payout-row-sub">0 plays × $1</p>
+              </div>
+              <p id="payout-song-total" class="payout-row-amount">$0.00</p>
+            </div>
+            <div class="payout-row">
+              <div>
+                <p class="payout-row-title">Music video plays</p>
+                <p id="payout-video-count" class="payout-row-sub">0 plays × $5</p>
+              </div>
+              <p id="payout-video-total" class="payout-row-amount">$0.00</p>
+            </div>
+          </div>
+
+          <p class="field-hint">Every song play (including album tracks) is worth $1. Every Music Video play is worth $5. Totals update live for the whole group.</p>
         </section>
 
       </main>
