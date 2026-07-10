@@ -1,14 +1,25 @@
-import { collection, onSnapshot, orderBy, query } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js'
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js'
 import { db } from './firebase.js'
 import { renderGrid, highlightNowPlaying } from './mediaCard.js'
 import { playSong, onTrackChange, getCurrentTrack } from './player.js'
 import { isUpcoming, getReleaseDate } from './releaseUtils.js'
+import { getState } from './auth.js'
 import { showToast } from './toast.js'
 
 const musicIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>'
 
 function formatReleaseDate(date) {
   return date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+async function deleteSong(song) {
+  if (!confirm(`Delete "${song.title}"? This can't be undone.`)) return
+  try {
+    await deleteDoc(doc(db, 'songs', song.id))
+    showToast('Song deleted.', 'success')
+  } catch (err) {
+    showToast(err.message.replace('Firebase: ', ''), 'error')
+  }
 }
 
 export function initMusicPage() {
@@ -20,6 +31,7 @@ export function initMusicPage() {
     loadingEl.classList.add('hidden')
     const songs = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
     const releasedSongs = songs.filter((s) => !isUpcoming(s))
+    const { isOwner } = getState()
 
     renderGrid(container, songs, {
       getImage: (s) => s.coverURL,
@@ -31,6 +43,8 @@ export function initMusicPage() {
       onDisabledClick: (song) => showToast(`"${song.title}" releases ${formatReleaseDate(getReleaseDate(song))}`, 'success'),
       showDownload: true,
       getDownloadUrl: (s) => s.audioURL,
+      showDelete: isOwner,
+      onDelete: deleteSong,
       emptyIcon: musicIcon,
       emptyText: 'No songs uploaded yet.',
     })
