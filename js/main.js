@@ -9,7 +9,6 @@ import { initImageModal } from './imageModal.js'
 import { initAlbumModal } from './albumModal.js'
 import { initMusicPage } from './musicPage.js'
 import { initVideoCollectionPage } from './videoCollectionPage.js'
-import { initPhotosPage } from './photosPage.js'
 import { initAlbumsPage } from './albumsPage.js'
 import { initPhotoGroupPage } from './photoGroupPage.js'
 import { initPhotoGroupModal } from './photoGroupModal.js'
@@ -64,7 +63,6 @@ onAuthChange(({ user }) => {
       collectionName: 'otherVideos', gridId: 'other-grid', loadingId: 'other-loading',
       subtitleField: 'description', emptyIcon: clapperIcon, emptyText: 'No videos uploaded yet.',
     })
-    initPhotosPage()
     initAlbumsPage()
     initPhotoGroupPage({
       collectionName: 'magazines', gridId: 'magazines-grid', loadingId: 'magazines-loading',

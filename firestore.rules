@@ -49,11 +49,6 @@ service cloud.firestore {
       allow create, update, delete: if isOwner();
     }
 
-    match /photos/{photoId} {
-      allow read: if isAuth();
-      allow create, update, delete: if isOwner();
-    }
-
     match /albums/{albumId} {
       allow read: if isAuth();
       allow create, update, delete: if isOwner();

@@ -13,7 +13,6 @@ const TABS = {
   livePerformance: { label: 'Live Performance', collection: 'livePerformances', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useArtist: true },
   interview: { label: 'Interview', collection: 'interviews', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useDesc: true },
   behindTheScenes: { label: 'Behind the Scenes', collection: 'behindTheScenes', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useDesc: true },
-  photo: { label: 'Photo', collection: 'photos', accept: 'image/*', fileField: 'imageURL', fileLabel: 'Photo', useDesc: true, descLabel: 'Caption (optional)', descFieldName: 'caption', noCover: true },
   other: { label: 'Other Video', collection: 'otherVideos', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useDesc: true },
 }
 
