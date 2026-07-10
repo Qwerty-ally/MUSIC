@@ -5,6 +5,7 @@ import { getState } from './auth.js'
 import { showToast } from './toast.js'
 import { initAlbumForm, resetAlbumForm, populateAlbumFormForEdit } from './albumForm.js'
 import { onAlbumEditRequested } from './albumModal.js'
+import { initPhotoGroupForm, setPhotoGroupTarget } from './photoGroupForm.js'
 
 const TABS = {
   song: { label: 'Song', collection: 'songs', accept: 'audio/*', fileField: 'audioURL', fileLabel: 'Audio file', useArtist: true, useReleaseDate: true },
@@ -16,20 +17,33 @@ const TABS = {
   other: { label: 'Other Video', collection: 'otherVideos', accept: 'video/*', fileField: 'videoURL', fileLabel: 'Video file', useDesc: true },
 }
 
+const PHOTO_GROUP_TABS = {
+  magazine: { label: 'Magazine', collection: 'magazines' },
+  photoShoot: { label: 'Photo Shoot', collection: 'photoShoots' },
+}
+
 let currentTab = 'song'
 let els = null
 
 function updateFormForTab() {
   const isAlbum = currentTab === 'album'
+  const isPhotoGroup = !!PHOTO_GROUP_TABS[currentTab]
 
   document.querySelectorAll('.upload-tab').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.tab === currentTab)
   })
 
-  els.genericForm.classList.toggle('hidden', isAlbum)
+  els.genericForm.classList.toggle('hidden', isAlbum || isPhotoGroup)
   els.albumForm.classList.toggle('hidden', !isAlbum)
+  els.photoGroupForm.classList.toggle('hidden', !isPhotoGroup)
+
   if (isAlbum) {
     resetAlbumForm()
+    return
+  }
+  if (isPhotoGroup) {
+    const { collection: col, label } = PHOTO_GROUP_TABS[currentTab]
+    setPhotoGroupTarget(col, label)
     return
   }
 
@@ -57,6 +71,7 @@ export function initUploadPage() {
     tabs: document.querySelectorAll('.upload-tab'),
     genericForm: document.getElementById('upload-form'),
     albumForm: document.getElementById('album-form'),
+    photoGroupForm: document.getElementById('photo-group-form'),
     form: document.getElementById('upload-form'),
     titleInput: document.getElementById('upload-title'),
     artistField: document.getElementById('upload-artist-field'),
@@ -76,6 +91,7 @@ export function initUploadPage() {
   }
 
   initAlbumForm()
+  initPhotoGroupForm()
 
   els.tabs.forEach((btn) => {
     btn.addEventListener('click', () => selectUploadTab(btn.dataset.tab))

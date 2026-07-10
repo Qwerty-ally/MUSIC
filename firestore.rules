@@ -67,6 +67,16 @@ service cloud.firestore {
       allow create, update, delete: if isOwner();
     }
 
+    match /magazines/{magazineId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /photoShoots/{shootId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isOwner();
+    }
+
     match /stats/payout {
       // Any signed-in listener's plays increment this doc; only owners can
       // see the running total.

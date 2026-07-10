@@ -11,6 +11,8 @@ import { initMusicPage } from './musicPage.js'
 import { initVideoCollectionPage } from './videoCollectionPage.js'
 import { initPhotosPage } from './photosPage.js'
 import { initAlbumsPage } from './albumsPage.js'
+import { initPhotoGroupPage } from './photoGroupPage.js'
+import { initPhotoGroupModal } from './photoGroupModal.js'
 import { initUploadPage } from './uploadPage.js'
 import { initPayoutPage } from './payoutPage.js'
 import { recordVideoPlay } from './payout.js'
@@ -20,6 +22,8 @@ import { trackPlaybackTime } from './userTracking.js'
 
 const clapperIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M2 10v10h20V10H2zm18-6h-3.2l2 3h-2.4l-2-3h-2l2 3h-2.4l-2-3h-2l2 3H7.6l-2-3H2v4h20V4z"/></svg>'
 const micIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>'
+const magazineIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M4 3h13a3 3 0 0 1 3 3v13a1 1 0 0 1-1 1H6a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1zm2 4v2h9V7H6zm0 4v2h9v-2H6zm0 4v2h6v-2H6z"/></svg>'
+const cameraIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M9 2l-1.5 2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.5L15 2H9zm3 6a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>'
 
 initToast()
 initAuthPage()
@@ -29,6 +33,7 @@ initVideoModal()
 initImageModal()
 initAlbumModal()
 initUserDetailModal()
+initPhotoGroupModal()
 
 trackPlaybackTime(document.getElementById('audio-el'))
 trackPlaybackTime(document.getElementById('video-modal-player'))
@@ -63,6 +68,14 @@ onAuthChange(({ user }) => {
     })
     initPhotosPage()
     initAlbumsPage()
+    initPhotoGroupPage({
+      collectionName: 'magazines', gridId: 'magazines-grid', loadingId: 'magazines-loading',
+      emptyIcon: magazineIcon, emptyText: 'No magazines uploaded yet.',
+    })
+    initPhotoGroupPage({
+      collectionName: 'photoShoots', gridId: 'photo-shoots-grid', loadingId: 'photo-shoots-loading',
+      emptyIcon: cameraIcon, emptyText: 'No photo shoots uploaded yet.',
+    })
     initUploadPage()
     initPayoutPage()
     initStatsPage()

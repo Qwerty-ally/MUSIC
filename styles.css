@@ -835,6 +835,33 @@ input, textarea {
   display: block;
 }
 
+/* ===== Photo group modal ===== */
+.photo-group-modal-inner { max-width: 720px; }
+
+.photo-group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.photo-group-thumb {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #282828;
+}
+
+.photo-group-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.15s;
+}
+
+.photo-group-thumb:hover img { transform: scale(1.06); }
+
 /* ===== Album modal ===== */
 .album-modal-inner { max-width: 480px; }
 

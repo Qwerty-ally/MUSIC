@@ -95,6 +95,12 @@
         <button class="sidebar-link" data-route="albums">
           <span class="sidebar-link-icon">&#128191;</span> Albums
         </button>
+        <button class="sidebar-link" data-route="magazines">
+          <span class="sidebar-link-icon">&#128218;</span> Magazines
+        </button>
+        <button class="sidebar-link" data-route="photo-shoots">
+          <span class="sidebar-link-icon">&#128248;</span> Photo Shoots
+        </button>
         <button class="sidebar-link" data-route="other">
           <span class="sidebar-link-icon">&#128250;</span> Other
         </button>
@@ -163,6 +169,18 @@
           <div id="albums-grid"></div>
         </section>
 
+        <section id="view-magazines" class="view hidden">
+          <h1>Magazines</h1>
+          <p id="magazines-loading" class="loading-text">Loading magazines&hellip;</p>
+          <div id="magazines-grid"></div>
+        </section>
+
+        <section id="view-photo-shoots" class="view hidden">
+          <h1>Photo Shoots</h1>
+          <p id="photo-shoots-loading" class="loading-text">Loading photo shoots&hellip;</p>
+          <div id="photo-shoots-grid"></div>
+        </section>
+
         <section id="view-other" class="view hidden">
           <h1>Other</h1>
           <p id="other-loading" class="loading-text">Loading videos&hellip;</p>
@@ -180,6 +198,8 @@
             <button type="button" class="upload-tab" data-tab="behindTheScenes">Behind the Scenes</button>
             <button type="button" class="upload-tab" data-tab="photo">Photo</button>
             <button type="button" class="upload-tab" data-tab="album">Album / EP</button>
+            <button type="button" class="upload-tab" data-tab="magazine">Magazine</button>
+            <button type="button" class="upload-tab" data-tab="photoShoot">Photo Shoot</button>
             <button type="button" class="upload-tab" data-tab="other">Other</button>
           </div>
 
@@ -258,6 +278,31 @@
             </div>
 
             <button type="submit" id="album-submit" class="btn-primary btn-block">Create Album</button>
+          </form>
+
+          <form id="photo-group-form" class="upload-form hidden">
+            <div class="field">
+              <label class="field-label">Title</label>
+              <input id="photo-group-title" type="text" placeholder="e.g. Issue #1, or Summer Shoot 2026" required />
+            </div>
+
+            <div class="field">
+              <label class="field-label">Cover image (optional)</label>
+              <input id="photo-group-cover" type="file" accept="image/*" />
+              <p class="field-hint">If left blank, the first photo below is used as the cover.</p>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Photos</label>
+              <input id="photo-group-files" type="file" accept="image/*" multiple required />
+              <p class="field-hint">Select multiple photos at once to upload them all as one group.</p>
+            </div>
+
+            <div id="photo-group-progress-wrap" class="progress-wrap hidden">
+              <div class="progress-track"><div id="photo-group-progress-bar" class="progress-bar"></div></div>
+            </div>
+
+            <button type="submit" id="photo-group-submit" class="btn-primary btn-block">Upload Group</button>
           </form>
         </section>
 
@@ -364,6 +409,20 @@
         <button id="image-modal-close" class="video-modal-close">&times;</button>
       </div>
       <img id="image-modal-img" class="image-modal-img" src="" alt="" />
+    </div>
+  </div>
+
+  <!-- ===================== PHOTO GROUP MODAL ===================== -->
+  <div id="photo-group-modal" class="video-modal hidden">
+    <div class="video-modal-inner photo-group-modal-inner">
+      <div class="video-modal-header">
+        <div>
+          <p id="photo-group-modal-title" class="video-modal-title"></p>
+          <p id="photo-group-modal-count" class="video-modal-subtitle"></p>
+        </div>
+        <button id="photo-group-modal-close" class="video-modal-close">&times;</button>
+      </div>
+      <div id="photo-group-modal-grid" class="photo-group-grid"></div>
     </div>
   </div>
 

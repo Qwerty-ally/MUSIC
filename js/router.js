@@ -1,6 +1,6 @@
 import { onAuthChange, signOut } from './auth.js'
 
-const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'photos', 'albums', 'other', 'upload', 'payout', 'stats']
+const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'photos', 'albums', 'magazines', 'photo-shoots', 'other', 'upload', 'payout', 'stats']
 const OWNER_ONLY_ROUTES = ['upload', 'payout', 'stats']
 
 function currentRoute() {
