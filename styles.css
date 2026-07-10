@@ -320,6 +320,31 @@ input, textarea {
 
 .media-card:hover .media-card-play { opacity: 1; transform: translateY(0); }
 
+.media-card-download {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  color: #ccc;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: all 0.15s;
+}
+
+.media-card:hover .media-card-download { opacity: 1; }
+
+.media-card-download:hover { background: rgba(0,0,0,0.9); color: #fff; }
+
+.media-card-download-active {
+  opacity: 1;
+  background: var(--accent);
+  color: #fff;
+}
+
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
 .media-card-title {
   font-size: 14px;
   font-weight: 700;

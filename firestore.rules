@@ -20,10 +20,7 @@ service cloud.firestore {
       // needed for the secondsListened ticks from userTracking.js).
       // An owner can also kick/unkick *someone else* by flipping only the
       // "banned" field — nothing else about another user's doc is writable.
-      allow update: if isAuth() && (
-        (request.auth.uid == userId && request.resource.data.role == resource.data.role) ||
-        (isOwner() && request.auth.uid != userId && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['banned']))
-      );
+      allow update: if isAuth() && ((request.auth.uid == userId && request.resource.data.role == resource.data.role) || (isOwner() && request.auth.uid != userId && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['banned'])));
       allow delete: if false;
     }
 

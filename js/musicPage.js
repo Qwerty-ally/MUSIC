@@ -29,6 +29,8 @@ export function initMusicPage() {
       isDisabled: (s) => isUpcoming(s),
       onClick: (song) => playSong(song, releasedSongs),
       onDisabledClick: (song) => showToast(`"${song.title}" releases ${formatReleaseDate(getReleaseDate(song))}`, 'success'),
+      showDownload: true,
+      getDownloadUrl: (s) => s.audioURL,
       emptyIcon: musicIcon,
       emptyText: 'No songs uploaded yet.',
     })

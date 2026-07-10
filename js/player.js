@@ -1,9 +1,12 @@
 import { recordSongPlay } from './payout.js'
+import { getPlaybackSrc } from './downloads.js'
 
 let queue = []
 let index = 0
 let audio = null
 let els = null
+let activeBlobURL = null
+let loadToken = 0
 const trackChangeListeners = new Set()
 
 function formatTime(t) {
@@ -51,10 +54,21 @@ function render() {
   notifyTrackChange()
 }
 
-function loadTrack() {
+async function loadTrack() {
   const track = currentTrack()
   if (!track) return
-  audio.src = track.audioURL
+
+  const token = ++loadToken
+  const src = await getPlaybackSrc(track.audioURL)
+  if (token !== loadToken) return // a newer track started loading while we awaited
+
+  if (activeBlobURL) {
+    URL.revokeObjectURL(activeBlobURL)
+    activeBlobURL = null
+  }
+  if (src.startsWith('blob:')) activeBlobURL = src
+
+  audio.src = src
   audio.play().catch(() => {})
   recordSongPlay()
   render()
