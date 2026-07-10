@@ -407,6 +407,41 @@ input, textarea {
 .payout-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 .payout-row-amount { font-size: 18px; font-weight: 700; color: #4ade80; }
 
+.payout-cashout-btn {
+  max-width: 420px;
+  background: #4ade80;
+  margin-bottom: 32px;
+}
+.payout-cashout-btn:hover { background: #6ee7a0; }
+.payout-cashout-btn:disabled { background: #2a2a2a; color: var(--text-muted); }
+
+.payout-history-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.payout-history {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 480px;
+}
+
+.payout-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.payout-history-amount { font-size: 14px; font-weight: 700; color: #4ade80; }
+
 /* ===== Stats page ===== */
 .stats-icon { color: #a78bfa; }
 

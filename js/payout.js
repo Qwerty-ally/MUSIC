@@ -1,5 +1,6 @@
-import { doc, setDoc, onSnapshot, increment } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js'
+import { doc, setDoc, addDoc, collection, onSnapshot, query, orderBy, limit, increment, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js'
 import { db } from './firebase.js'
+import { getState } from './auth.js'
 
 const SONG_RATE = 1
 const VIDEO_RATE = 5
@@ -26,6 +27,28 @@ export function onPayoutChange(callback) {
       videoTotal: videoPlays * VIDEO_RATE,
       grandTotal: songPlays * SONG_RATE + videoPlays * VIDEO_RATE,
     })
+  })
+}
+
+// Claims the current running total: logs it to payoutHistory, then zeroes
+// the live counters so the next total starts fresh from $0.
+export async function claimPayout({ amount, songPlays, videoPlays }) {
+  const { user, profile } = getState()
+  await addDoc(collection(db, 'payoutHistory'), {
+    amount,
+    songPlays,
+    videoPlays,
+    claimedBy: user.uid,
+    claimedByName: profile?.displayName || user.email || 'Owner',
+    claimedAt: serverTimestamp(),
+  })
+  await setDoc(payoutRef, { songPlays: 0, videoPlays: 0 }, { merge: true })
+}
+
+export function onPayoutHistoryChange(callback) {
+  const q = query(collection(db, 'payoutHistory'), orderBy('claimedAt', 'desc'), limit(20))
+  return onSnapshot(q, (snap) => {
+    callback(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
   })
 }
 
