@@ -14,8 +14,6 @@ import { initAlbumsPage } from './albumsPage.js'
 import { initPhotoGroupPage } from './photoGroupPage.js'
 import { initPhotoGroupModal } from './photoGroupModal.js'
 import { initUploadPage } from './uploadPage.js'
-import { initPayoutPage } from './payoutPage.js'
-import { recordVideoPlay } from './payout.js'
 import { initStatsPage } from './statsPage.js'
 import { initUserDetailModal } from './userDetailModal.js'
 import { trackPlaybackTime } from './userTracking.js'
@@ -48,7 +46,7 @@ onAuthChange(({ user }) => {
     initMusicPage()
     initVideoCollectionPage({
       collectionName: 'musicVideos', gridId: 'music-videos-grid', loadingId: 'music-videos-loading',
-      subtitleField: 'artist', emptyIcon: clapperIcon, emptyText: 'No music videos uploaded yet.', onPlay: recordVideoPlay,
+      subtitleField: 'artist', emptyIcon: clapperIcon, emptyText: 'No music videos uploaded yet.',
     })
     initVideoCollectionPage({
       collectionName: 'livePerformances', gridId: 'live-performances-grid', loadingId: 'live-performances-loading',
@@ -77,7 +75,6 @@ onAuthChange(({ user }) => {
       emptyIcon: cameraIcon, emptyText: 'No photo shoots uploaded yet.',
     })
     initUploadPage()
-    initPayoutPage()
     initStatsPage()
   }
 })

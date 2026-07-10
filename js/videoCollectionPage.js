@@ -5,9 +5,8 @@ import { openVideoModal } from './videoModal.js'
 
 // Shared page logic for any "grid of video cards that open a video modal"
 // collection: Music Videos, Live Performances, Interviews, Behind the Scenes,
-// Other. Pass onPlay to run a side effect (e.g. payout tracking) whenever a
-// video in this collection is opened.
-export function initVideoCollectionPage({ collectionName, gridId, loadingId, subtitleField, emptyIcon, emptyText, onPlay }) {
+// Other.
+export function initVideoCollectionPage({ collectionName, gridId, loadingId, subtitleField, emptyIcon, emptyText }) {
   const container = document.getElementById(gridId)
   const loadingEl = document.getElementById(loadingId)
 
@@ -19,10 +18,7 @@ export function initVideoCollectionPage({ collectionName, gridId, loadingId, sub
       getImage: (v) => v.thumbnailURL,
       getTitle: (v) => v.title,
       getSubtitle: (v) => v[subtitleField],
-      onClick: (video) => {
-        openVideoModal(video)
-        if (onPlay) onPlay()
-      },
+      onClick: (video) => openVideoModal(video),
       emptyIcon,
       emptyText,
     })

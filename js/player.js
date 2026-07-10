@@ -1,4 +1,3 @@
-import { recordSongPlay } from './payout.js'
 import { getPlaybackSrc } from './downloads.js'
 
 let queue = []
@@ -70,7 +69,6 @@ async function loadTrack() {
 
   audio.src = src
   audio.play().catch(() => {})
-  recordSongPlay()
   render()
 }
 

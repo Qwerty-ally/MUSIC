@@ -74,18 +74,5 @@ service cloud.firestore {
       allow create, update, delete: if isOwner();
     }
 
-    match /stats/payout {
-      // Any signed-in listener's plays increment this doc; only owners can
-      // see the running total.
-      allow read: if isOwner();
-      allow create, update: if isAuth();
-      allow delete: if false;
-    }
-
-    match /payoutHistory/{entryId} {
-      // A log of past "cash outs" — owner-only, and entries are append-only.
-      allow read, create: if isOwner();
-      allow update, delete: if false;
-    }
   }
 }
