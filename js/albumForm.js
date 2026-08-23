@@ -8,16 +8,19 @@ let els = null
 let editingId = null
 let existingCoverURL = ''
 
-function addTrackRow(title = '', audioURL = '') {
+function addTrackRow(title = '', audioURL = '', releaseDate = null) {
   const row = document.createElement('div')
   row.className = 'album-track-row-input'
   row.dataset.existingAudio = audioURL || ''
+  const dateObj = releaseDate ? (typeof releaseDate.toDate === 'function' ? releaseDate.toDate() : new Date(releaseDate)) : null
+  const dateStr = dateObj ? dateObj.toISOString().slice(0, 10) : ''
   row.innerHTML = `
     <input type="text" class="album-track-name" placeholder="Track name" value="${title.replace(/"/g, '&quot;')}" />
     <label class="album-track-file-label">
       <input type="file" class="album-track-file" accept="audio/*" hidden />
       <span class="album-track-file-status">${audioURL ? '&#9989; Audio attached' : 'Add audio'}</span>
     </label>
+    <input type="date" class="album-track-date" value="${dateStr}" title="Early release date (optional) — leave blank to release with the rest of the album" />
     <button type="button" class="album-track-remove">&times;</button>
   `
   row.querySelector('.album-track-file').addEventListener('change', (e) => {
@@ -46,7 +49,10 @@ async function collectTracks(onProgress) {
       onProgress(uploaded, filesToUpload)
       audioURL = await uploadMedia(file, () => {})
     }
-    tracks.push({ title, audioURL })
+    const track = { title, audioURL }
+    const dateValue = row.querySelector('.album-track-date').value
+    if (dateValue) track.releaseDate = new Date(dateValue)
+    tracks.push(track)
   }
   return tracks
 }
@@ -72,7 +78,7 @@ export function populateAlbumFormForEdit(album) {
   els.releaseDateInput.value = releaseDate ? releaseDate.toISOString().slice(0, 10) : ''
   els.tracksList.innerHTML = ''
   const tracks = album.tracks && album.tracks.length ? album.tracks : [{ title: '', audioURL: '' }]
-  tracks.forEach((t) => addTrackRow(t.title, t.audioURL))
+  tracks.forEach((t) => addTrackRow(t.title, t.audioURL, t.releaseDate))
   els.submitBtn.textContent = 'Save Changes'
   els.progressWrap.classList.add('hidden')
 }

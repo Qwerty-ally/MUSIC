@@ -61,7 +61,6 @@ function renderCountdown(date) {
     if (diff <= 0) {
       clearInterval(countdownInterval)
       countdownWrap.classList.add('hidden')
-      tracksEl.classList.remove('album-tracklist-locked')
       return
     }
     const days = Math.floor(diff / 86400000)
@@ -93,31 +92,36 @@ export function openAlbumModal(album) {
   if (upcoming) renderCountdown(getReleaseDate(album))
 
   const tracks = album.tracks || []
+  // A track releases early if it has its own releaseDate; otherwise it
+  // follows the album's releaseDate, so an album can be "out" while some
+  // tracks are still locked, or "upcoming" while some tracks are already out.
+  const trackIsUpcoming = (t) => (t.releaseDate ? isUpcoming(t) : upcoming)
   const playableTracks = tracks
     .map((t, i) => ({ id: `${album.id}-${i}`, title: t.title, artist: album.title, audioURL: t.audioURL, coverURL: album.coverURL }))
-    .filter((t) => t.audioURL)
+    .filter((t, i) => t.audioURL && !trackIsUpcoming(tracks[i]))
 
-  tracksEl.classList.toggle('album-tracklist-locked', upcoming)
+  tracksEl.classList.remove('album-tracklist-locked')
   tracksEl.innerHTML = tracks.length
     ? tracks.map((t, i) => {
-        const playable = !upcoming && !!t.audioURL
+        const locked = trackIsUpcoming(t)
+        const playable = !locked && !!t.audioURL
+        const lockTitle = locked ? `Releases ${getReleaseDate(t.releaseDate ? t : album).toLocaleDateString()}` : ''
         return `
-          <div class="album-track-row${playable ? ' album-track-row-playable' : ''}" data-index="${i}">
+          <div class="album-track-row${playable ? ' album-track-row-playable' : ''}${locked ? ' album-track-row-locked' : ''}" data-index="${i}">
             <span class="album-track-num">${i + 1}</span>
             <span class="album-track-title">${escapeHtml(t.title)}</span>
+            ${locked ? `<span class="album-track-lock" title="${lockTitle}">&#128274;</span>` : ''}
           </div>
         `
       }).join('')
     : `<p class="loading-text">No tracks listed yet.</p>`
 
-  if (!upcoming) {
-    tracksEl.querySelectorAll('.album-track-row-playable').forEach((row) => {
-      const i = Number(row.dataset.index)
-      const track = playableTracks.find((t) => t.id === `${album.id}-${i}`)
-      if (!track) return
-      row.addEventListener('click', () => playSong(track, playableTracks))
-    })
-  }
+  tracksEl.querySelectorAll('.album-track-row-playable').forEach((row) => {
+    const i = Number(row.dataset.index)
+    const track = playableTracks.find((t) => t.id === `${album.id}-${i}`)
+    if (!track) return
+    row.addEventListener('click', () => playSong(track, playableTracks))
+  })
 
   // Tag rows with a song key (title+audioURL) so the shared now-playing
   // highlight logic can match them against the Music grid too.

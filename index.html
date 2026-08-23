@@ -75,46 +75,46 @@
 
       <nav class="sidebar-nav">
         <button class="sidebar-link active" data-route="music">
-          <span class="sidebar-link-icon">&#127925;</span> Music
+          <span class="sidebar-link-icon">&#127925;</span><span class="sidebar-link-label">Music</span>
         </button>
         <button class="sidebar-link" data-route="music-videos">
-          <span class="sidebar-link-icon">&#127916;</span> Music Videos
+          <span class="sidebar-link-icon">&#127916;</span><span class="sidebar-link-label">Music Videos</span>
         </button>
         <button class="sidebar-link" data-route="live-performances">
-          <span class="sidebar-link-icon">&#127908;</span> Live Performances
+          <span class="sidebar-link-icon">&#127908;</span><span class="sidebar-link-label">Live Performances</span>
         </button>
         <button class="sidebar-link" data-route="interviews">
-          <span class="sidebar-link-icon">&#127897;</span> Interviews
+          <span class="sidebar-link-icon">&#127897;</span><span class="sidebar-link-label">Interviews</span>
         </button>
         <button class="sidebar-link" data-route="behind-the-scenes">
-          <span class="sidebar-link-icon">&#127916;</span> Behind the Scenes
+          <span class="sidebar-link-icon">&#127916;</span><span class="sidebar-link-label">Behind the Scenes</span>
         </button>
         <button class="sidebar-link" data-route="albums">
-          <span class="sidebar-link-icon">&#128191;</span> Albums
+          <span class="sidebar-link-icon">&#128191;</span><span class="sidebar-link-label">Albums</span>
         </button>
         <button class="sidebar-link" data-route="magazines">
-          <span class="sidebar-link-icon">&#128218;</span> Magazines
+          <span class="sidebar-link-icon">&#128218;</span><span class="sidebar-link-label">Magazines</span>
         </button>
         <button class="sidebar-link" data-route="photo-shoots">
-          <span class="sidebar-link-icon">&#128248;</span> Photo Shoots
+          <span class="sidebar-link-icon">&#128248;</span><span class="sidebar-link-label">Photo Shoots</span>
         </button>
         <button class="sidebar-link" data-route="other">
-          <span class="sidebar-link-icon">&#128250;</span> Other
+          <span class="sidebar-link-icon">&#128250;</span><span class="sidebar-link-label">Other</span>
         </button>
         <button id="sidebar-upload-link" class="sidebar-link hidden" data-route="upload">
-          <span class="sidebar-link-icon">&#11014;</span> Upload
+          <span class="sidebar-link-icon">&#11014;</span><span class="sidebar-link-label">Upload</span>
         </button>
         <button id="sidebar-stats-link" class="sidebar-link hidden" data-route="stats">
-          <span class="sidebar-link-icon">&#128202;</span> Stats
+          <span class="sidebar-link-icon">&#128202;</span><span class="sidebar-link-label">Stats</span>
         </button>
       </nav>
 
       <div class="sidebar-footer">
         <div class="sidebar-user">
           <span id="sidebar-owner-badge" class="owner-badge hidden" title="Owner">&#128081;</span>
-          <span id="sidebar-username">Loading&hellip;</span>
+          <span id="sidebar-username" class="sidebar-username-label">Loading&hellip;</span>
         </div>
-        <button id="sidebar-logout" class="sidebar-logout">Log out</button>
+        <button id="sidebar-logout" class="sidebar-logout"><span class="sidebar-logout-icon">&#8630;</span><span class="sidebar-link-label">Log out</span></button>
       </div>
     </aside>
 
@@ -256,6 +256,7 @@
 
             <div class="field">
               <label class="field-label">Tracks</label>
+              <p class="field-hint">Each track can have its own release date — leave a track's date blank to have it drop with the rest of the album/EP.</p>
               <div id="album-tracks-list" class="album-tracks-list"></div>
               <button type="button" id="album-add-track" class="btn-secondary">+ Add track</button>
             </div>

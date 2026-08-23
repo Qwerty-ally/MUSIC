@@ -796,6 +796,11 @@ input, textarea {
 
 .album-track-file-label:hover .album-track-file-status { background: #3a3a3a; color: #fff; }
 
+.album-track-row-input .album-track-date {
+  flex: 0 0 132px;
+  color-scheme: dark;
+}
+
 /* ===== Image modal ===== */
 .image-modal-img {
   width: 100%;
@@ -910,9 +915,18 @@ input, textarea {
 
 .album-track-num { color: var(--text-muted); width: 20px; text-align: right; font-size: 12px; }
 
-.album-tracklist-locked .album-track-row {
+.album-track-row-locked {
   color: #666;
   pointer-events: none;
+}
+
+.album-track-row-locked .album-track-num { color: #444; }
+
+.album-track-lock {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 12px;
+  flex-shrink: 0;
 }
 
 .album-track-row.now-playing { color: var(--accent-light); }
@@ -924,12 +938,30 @@ input, textarea {
 .media-card.now-playing .media-card-title { color: var(--accent-light); }
 .media-card.now-playing .media-card-play { opacity: 1; transform: translateY(0); background: var(--accent-light); }
 
-.album-tracklist-locked .album-track-num { color: #444; }
-
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .sidebar { width: 72px; }
-  .sidebar-logo span, .sidebar-link span:not(.sidebar-link-icon), .sidebar-user span:not(.owner-badge), .sidebar-logout { display: none; }
+  .sidebar { width: 72px; padding: 12px 8px; overflow-y: auto; }
+  .sidebar-logo { justify-content: center; gap: 0; }
+  .sidebar-link { justify-content: center; padding: 10px; gap: 0; }
+  .sidebar-logout { justify-content: center; padding: 10px; gap: 0; }
+  .sidebar-user { justify-content: center; }
+  .sidebar-link-label,
+  .sidebar-username-label,
+  .sidebar-logo span { display: none; }
+  .sidebar-link-icon { font-size: 20px; }
+  .sidebar-logout-icon { font-size: 18px; }
+
+  .view { padding: 20px 16px; }
+  .view h1 { font-size: 24px; margin-bottom: 16px; }
+  .media-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+
   .player-bar { grid-template-columns: 1fr; gap: 8px; }
   .player-track-info { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .media-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .auth-card { padding: 20px; }
+  .role-grid { grid-template-columns: 1fr; }
+  .upload-form, .album-form, .photo-group-form { padding: 16px; }
 }
