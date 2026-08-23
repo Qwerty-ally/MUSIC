@@ -103,14 +103,26 @@ export function openAlbumModal(album) {
   tracksEl.classList.remove('album-tracklist-locked')
   tracksEl.innerHTML = tracks.length
     ? tracks.map((t, i) => {
-        const locked = trackIsUpcoming(t)
+        const dateLocked = trackIsUpcoming(t)
+        // Its date arrived but nobody uploaded audio yet — don't let it
+        // silently "release" as a dead row; keep it visibly pending.
+        const missingAudio = !dateLocked && !t.audioURL
+        const locked = dateLocked || missingAudio
         const playable = !locked && !!t.audioURL
-        const lockTitle = locked ? `Releases ${getReleaseDate(t.releaseDate ? t : album).toLocaleDateString()}` : ''
+        let icon = ''
+        let iconTitle = ''
+        if (dateLocked) {
+          icon = '&#128274;'
+          iconTitle = `Releases ${getReleaseDate(t.releaseDate ? t : album).toLocaleDateString()}`
+        } else if (missingAudio) {
+          icon = '&#8987;'
+          iconTitle = 'Audio not uploaded yet'
+        }
         return `
           <div class="album-track-row${playable ? ' album-track-row-playable' : ''}${locked ? ' album-track-row-locked' : ''}" data-index="${i}">
             <span class="album-track-num">${i + 1}</span>
             <span class="album-track-title">${escapeHtml(t.title)}</span>
-            ${locked ? `<span class="album-track-lock" title="${lockTitle}">&#128274;</span>` : ''}
+            ${icon ? `<span class="album-track-lock" title="${iconTitle}">${icon}</span>` : ''}
           </div>
         `
       }).join('')
