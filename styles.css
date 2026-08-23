@@ -668,6 +668,25 @@ input, textarea {
   display: block;
 }
 
+/* ===== Version badge ===== */
+.version-badge {
+  position: fixed;
+  top: 10px;
+  right: 12px;
+  z-index: 40;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(24, 24, 24, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 9px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.version-badge:hover { color: #fff; background: rgba(24, 24, 24, 0.9); }
+
 /* ===== Toasts ===== */
 .toast-container {
   position: fixed;
