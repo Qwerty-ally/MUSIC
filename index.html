@@ -224,7 +224,9 @@
 
             <div class="field">
               <label id="upload-file-label" class="field-label">Audio file</label>
-              <input id="upload-file" type="file" accept="audio/*" required />
+              <input id="upload-file" type="file" accept="audio/*" />
+              <p id="upload-file-hint" class="field-hint hidden">Leave blank if this is an upcoming release — you can add the audio later. It won't be playable until it's uploaded, even after the release date passes.</p>
+              <p id="upload-file-status" class="field-hint hidden"></p>
             </div>
 
             <div id="upload-cover-field" class="field">

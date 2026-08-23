@@ -5,8 +5,9 @@ const downloadIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="curr
 const downloadedIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>'
 const spinnerIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" class="spin"><circle cx="12" cy="12" r="9" stroke-opacity="0.25"/><path d="M21 12a9 9 0 0 0-9-9"/></svg>'
 const deleteIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 7h12l-1 13.5a1.5 1.5 0 0 1-1.5 1.5h-7a1.5 1.5 0 0 1-1.5-1.5L6 7zm3-3.5A1.5 1.5 0 0 1 10.5 2h3A1.5 1.5 0 0 1 15 3.5V5h4v2H5V5h4V3.5z"/></svg>'
+const editIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4 20h4l10.5-10.5-4-4L4 16v4zm14.7-15.3a1 1 0 0 0 0-1.4l-2-2a1 1 0 0 0-1.4 0l-1.8 1.8 4 4 1.8-1.8z"/></svg>'
 
-export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, isDisabled, onClick, onDisabledClick, showPlayIcon = true, showDownload = false, getDownloadUrl, showDelete = false, onDelete, squareArt = true, emptyIcon, emptyText }) {
+export function renderGrid(container, items, { getImage, getTitle, getSubtitle, getBadge, isDisabled, onClick, onDisabledClick, showPlayIcon = true, showDownload = false, getDownloadUrl, showDelete = false, onDelete, showEdit = false, onEdit, squareArt = true, emptyIcon, emptyText }) {
   container.innerHTML = ''
 
   if (!items.length) {
@@ -36,6 +37,7 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
           <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M8 5v14l11-7z"/></svg>
         </div>` : ''}
         ${downloadUrl ? `<button type="button" class="media-card-download" data-url="${encodeURIComponent(downloadUrl)}" title="Download for offline listening">${downloadIcon}</button>` : ''}
+        ${showEdit ? `<button type="button" class="media-card-edit" title="Edit">${editIcon}</button>` : ''}
         ${showDelete ? `<button type="button" class="media-card-delete" title="Delete">${deleteIcon}</button>` : ''}
       </div>
       <p class="media-card-title">${escapeHtml(getTitle(item))}</p>
@@ -43,6 +45,12 @@ export function renderGrid(container, items, { getImage, getTitle, getSubtitle, 
       ${badge ? `<p class="media-card-badge">${escapeHtml(badge)}</p>` : ''}
     `
     card.addEventListener('click', () => (disabled ? onDisabledClick && onDisabledClick(item) : onClick(item)))
+    if (showEdit) {
+      card.querySelector('.media-card-edit').addEventListener('click', (e) => {
+        e.stopPropagation()
+        onEdit && onEdit(item)
+      })
+    }
     if (showDelete) {
       card.querySelector('.media-card-delete').addEventListener('click', (e) => {
         e.stopPropagation()

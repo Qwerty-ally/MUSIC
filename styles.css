@@ -353,6 +353,22 @@ input, textarea {
 .spin { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+.media-card-edit {
+  position: absolute;
+  top: 8px; left: 8px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  color: #ccc;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: all 0.15s;
+}
+
+.media-card:hover .media-card-edit { opacity: 1; }
+
+.media-card-edit:hover { background: rgba(0,0,0,0.9); color: #fff; }
+
 .media-card-delete {
   position: absolute;
   top: 8px; right: 8px;

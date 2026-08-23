@@ -5,6 +5,7 @@ import { playSong, onTrackChange, getCurrentTrack } from './player.js'
 import { isUpcoming, getReleaseDate } from './releaseUtils.js'
 import { getState } from './auth.js'
 import { showToast } from './toast.js'
+import { populateSongFormForEdit } from './uploadPage.js'
 
 const musicIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>'
 
@@ -30,19 +31,29 @@ export function initMusicPage() {
   onSnapshot(q, (snap) => {
     loadingEl.classList.add('hidden')
     const songs = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
-    const releasedSongs = songs.filter((s) => !isUpcoming(s))
+    // A song whose release date has passed but has no audio yet is still
+    // not actually out — don't let it "release" as an unplayable dead card.
+    const isReleased = (s) => !isUpcoming(s) && !!s.audioURL
+    const releasedSongs = songs.filter(isReleased)
     const { isOwner } = getState()
 
     renderGrid(container, songs, {
       getImage: (s) => s.coverURL,
       getTitle: (s) => s.title,
       getSubtitle: (s) => s.artist,
-      getBadge: (s) => (isUpcoming(s) ? 'Upcoming Release' : ''),
-      isDisabled: (s) => isUpcoming(s),
+      getBadge: (s) => (isUpcoming(s) ? 'Upcoming Release' : (!s.audioURL ? 'Audio Pending' : '')),
+      isDisabled: (s) => !isReleased(s),
       onClick: (song) => playSong(song, releasedSongs),
-      onDisabledClick: (song) => showToast(`"${song.title}" releases ${formatReleaseDate(getReleaseDate(song))}`, 'success'),
+      onDisabledClick: (song) => showToast(
+        isUpcoming(song)
+          ? `"${song.title}" releases ${formatReleaseDate(getReleaseDate(song))}`
+          : `"${song.title}" doesn't have audio uploaded yet.`,
+        isUpcoming(song) ? 'success' : 'error'
+      ),
       showDownload: true,
       getDownloadUrl: (s) => s.audioURL,
+      showEdit: isOwner,
+      onEdit: populateSongFormForEdit,
       showDelete: isOwner,
       onDelete: deleteSong,
       emptyIcon: musicIcon,
