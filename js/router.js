@@ -10,10 +10,15 @@ function currentRoute() {
 }
 
 // A public release link works with no account — handled entirely outside
-// the normal auth-gated routing below.
-function releaseIdFromHash() {
-  const m = location.hash.match(/^#\/release\/(.+)$/)
-  return m ? decodeURIComponent(m[1]) : null
+// the normal auth-gated routing below. New links are #/release/<type>/<id>
+// (type is "album" or "song"); older links shared before songs got their
+// own release page were #/release/<albumId> with no type segment, so those
+// still resolve as albums.
+function releaseInfoFromHash() {
+  const typed = location.hash.match(/^#\/release\/(album|song)\/(.+)$/)
+  if (typed) return { type: typed[1], id: decodeURIComponent(typed[2]) }
+  const legacy = location.hash.match(/^#\/release\/(.+)$/)
+  return legacy ? { type: 'album', id: decodeURIComponent(legacy[1]) } : null
 }
 
 function showRoute(route, isOwner) {
@@ -43,10 +48,11 @@ export function initRouter() {
     isOwnerCache = isOwner
     hasUserCache = !!user
 
-    if (releaseIdFromHash()) {
+    const releaseInfo = releaseInfoFromHash()
+    if (releaseInfo) {
       authView.classList.add('hidden')
       appView.classList.add('hidden')
-      showReleasePage(releaseIdFromHash())
+      showReleasePage(releaseInfo.type, releaseInfo.id)
       return
     }
     hideReleasePage()
@@ -69,11 +75,11 @@ export function initRouter() {
   })
 
   window.addEventListener('hashchange', () => {
-    const releaseId = releaseIdFromHash()
-    if (releaseId) {
+    const releaseInfo = releaseInfoFromHash()
+    if (releaseInfo) {
       authView.classList.add('hidden')
       appView.classList.add('hidden')
-      showReleasePage(releaseId)
+      showReleasePage(releaseInfo.type, releaseInfo.id)
       return
     }
     hideReleasePage()

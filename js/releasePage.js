@@ -3,9 +3,12 @@ import { db } from './firebase.js'
 import { getReleaseDate, isUpcoming } from './releaseUtils.js'
 import { escapeHtml } from './mediaCard.js'
 
-// Public, no-login page at #/release/<albumId> — Firestore rules allow an
-// unauthenticated "get" of a single album by ID for exactly this, while
-// still requiring sign-in to browse/query the albums collection at large.
+// Public, no-login page at #/release/album/<id> or #/release/song/<id> —
+// Firestore rules allow an unauthenticated "get" of a single album/song
+// document by ID for exactly this, while still requiring sign-in to
+// browse/query either collection at large.
+
+const COLLECTIONS = { album: 'albums', song: 'songs' }
 
 let els = null
 let unsub = null
@@ -23,6 +26,7 @@ function ensureEls() {
     title: document.getElementById('release-page-title'),
     countdownWrap: document.getElementById('release-page-countdown'),
     out: document.getElementById('release-page-out'),
+    tracksWrap: document.getElementById('release-page-tracks-wrap'),
     tracks: document.getElementById('release-page-tracks'),
   }
   return els
@@ -46,26 +50,17 @@ function renderCountdown(date) {
   countdownInterval = setInterval(tick, 1000)
 }
 
-function render(album) {
-  els.loading.classList.add('hidden')
-  els.notFound.classList.add('hidden')
-  els.content.classList.remove('hidden')
-
-  const upcoming = isUpcoming(album)
-  els.cover.src = album.coverURL || `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(album.title)}`
+function renderAlbum(album) {
   els.type.textContent = album.type === 'ep' ? 'EP' : 'Album'
   els.title.textContent = album.title
 
-  if (countdownInterval) clearInterval(countdownInterval)
-  els.countdownWrap.classList.toggle('hidden', !upcoming)
-  els.out.classList.toggle('hidden', upcoming)
-  if (upcoming) renderCountdown(getReleaseDate(album))
-
+  const upcoming = isUpcoming(album)
   const tracks = album.tracks || []
   // Same per-track lock rules as the in-app album modal (own releaseDate,
   // or falls back to the album's) — this page never plays audio, so a
   // locked track just shows its lock/pending state, no click handling.
   const trackIsUpcoming = (t) => (t.releaseDate ? isUpcoming(t) : upcoming)
+  els.tracksWrap.classList.remove('hidden')
   els.tracks.innerHTML = tracks.length
     ? tracks.map((t, i) => {
         const dateLocked = trackIsUpcoming(t)
@@ -80,25 +75,58 @@ function render(album) {
         `
       }).join('')
     : `<p class="loading-text">No tracks listed yet.</p>`
+
+  return { upcoming, releaseDate: getReleaseDate(album) }
 }
 
-export function showReleasePage(albumId) {
+function renderSong(song) {
+  els.type.textContent = song.artist || 'Song'
+  els.title.textContent = song.title
+  els.tracksWrap.classList.add('hidden')
+  els.tracks.innerHTML = ''
+
+  return { upcoming: isUpcoming(song), releaseDate: getReleaseDate(song) }
+}
+
+function render(type, item) {
+  els.loading.classList.add('hidden')
+  els.notFound.classList.add('hidden')
+  els.content.classList.remove('hidden')
+
+  els.cover.src = item.coverURL || `https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(item.title)}`
+
+  const { upcoming, releaseDate } = type === 'song' ? renderSong(item) : renderAlbum(item)
+
+  if (countdownInterval) clearInterval(countdownInterval)
+  els.countdownWrap.classList.toggle('hidden', !upcoming)
+  els.out.classList.toggle('hidden', upcoming)
+  if (upcoming) renderCountdown(releaseDate)
+}
+
+export function showReleasePage(type, id) {
   ensureEls()
   els.page.classList.remove('hidden')
   els.loading.classList.remove('hidden')
   els.content.classList.add('hidden')
   els.notFound.classList.add('hidden')
 
+  const collection = COLLECTIONS[type]
   if (unsub) unsub()
+  if (!collection) {
+    els.loading.classList.add('hidden')
+    els.notFound.classList.remove('hidden')
+    return
+  }
+
   unsub = onSnapshot(
-    doc(db, 'albums', albumId),
+    doc(db, collection, id),
     (snap) => {
       if (!snap.exists()) {
         els.loading.classList.add('hidden')
         els.notFound.classList.remove('hidden')
         return
       }
-      render({ id: snap.id, ...snap.data() })
+      render(type, { id: snap.id, ...snap.data() })
     },
     () => {
       els.loading.classList.add('hidden')

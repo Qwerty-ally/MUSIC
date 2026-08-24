@@ -5,6 +5,7 @@ import { getReleaseDate, isUpcoming } from './releaseUtils.js'
 import { escapeHtml, highlightNowPlaying } from './mediaCard.js'
 import { playSong, onTrackChange, getCurrentTrack } from './player.js'
 import { showToast } from './toast.js'
+import { copyReleaseLink } from './shareLink.js'
 
 let modal, coverEl, titleEl, typeEl, countdownWrap, tracksEl, ownerActions, editBtn, deleteBtn, copyLinkBtn
 let countdownInterval = null
@@ -26,15 +27,9 @@ export function initAlbumModal() {
   document.getElementById('album-modal-close').addEventListener('click', closeAlbumModal)
   modal.addEventListener('click', (e) => { if (e.target === modal) closeAlbumModal() })
 
-  copyLinkBtn.addEventListener('click', async () => {
+  copyLinkBtn.addEventListener('click', () => {
     if (!currentAlbum) return
-    const url = `${location.origin}${location.pathname}#/release/${currentAlbum.id}`
-    try {
-      await navigator.clipboard.writeText(url)
-      showToast('Release link copied!', 'success')
-    } catch {
-      window.prompt('Copy this link:', url)
-    }
+    copyReleaseLink('album', currentAlbum.id)
   })
 
   editBtn.addEventListener('click', () => {

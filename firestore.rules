@@ -25,7 +25,10 @@ service cloud.firestore {
     }
 
     match /songs/{songId} {
-      allow read: if isAuth();
+      // Public "get" (fetch by known ID) powers the shareable release link
+      // at #/release/song/<id>, same reasoning as the albums rule below.
+      allow get: if true;
+      allow list: if isAuth();
       allow create, update, delete: if isOwner();
     }
 

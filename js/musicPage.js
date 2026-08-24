@@ -6,6 +6,7 @@ import { isUpcoming, getReleaseDate } from './releaseUtils.js'
 import { getState } from './auth.js'
 import { showToast } from './toast.js'
 import { populateSongFormForEdit } from './uploadPage.js'
+import { copyReleaseLink } from './shareLink.js'
 
 const musicIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>'
 
@@ -52,6 +53,8 @@ export function initMusicPage() {
       ),
       showDownload: true,
       getDownloadUrl: (s) => s.audioURL,
+      showShare: true,
+      onShare: (song) => copyReleaseLink('song', song.id),
       showEdit: isOwner,
       onEdit: populateSongFormForEdit,
       showDelete: isOwner,
