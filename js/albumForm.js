@@ -3,6 +3,7 @@ import { db } from './firebase.js'
 import { uploadMedia } from './cloudinary.js'
 import { getState } from './auth.js'
 import { showToast } from './toast.js'
+import { dateInputToDate, dateToInputValue } from './releaseUtils.js'
 
 let els = null
 let editingId = null
@@ -13,7 +14,7 @@ function addTrackRow(title = '', audioURL = '', releaseDate = null) {
   row.className = 'album-track-row-input'
   row.dataset.existingAudio = audioURL || ''
   const dateObj = releaseDate ? (typeof releaseDate.toDate === 'function' ? releaseDate.toDate() : new Date(releaseDate)) : null
-  const dateStr = dateObj ? dateObj.toISOString().slice(0, 10) : ''
+  const dateStr = dateToInputValue(dateObj)
   row.innerHTML = `
     <input type="text" class="album-track-name" placeholder="Track name" value="${title.replace(/"/g, '&quot;')}" />
     <label class="album-track-file-label">
@@ -51,7 +52,7 @@ async function collectTracks(onProgress) {
     }
     const track = { title, audioURL }
     const dateValue = row.querySelector('.album-track-date').value
-    if (dateValue) track.releaseDate = new Date(dateValue)
+    if (dateValue) track.releaseDate = dateInputToDate(dateValue)
     tracks.push(track)
   }
   return tracks
@@ -75,7 +76,7 @@ export function populateAlbumFormForEdit(album) {
   const releaseDate = album.releaseDate
     ? (typeof album.releaseDate.toDate === 'function' ? album.releaseDate.toDate() : new Date(album.releaseDate))
     : null
-  els.releaseDateInput.value = releaseDate ? releaseDate.toISOString().slice(0, 10) : ''
+  els.releaseDateInput.value = dateToInputValue(releaseDate)
   els.tracksList.innerHTML = ''
   const tracks = album.tracks && album.tracks.length ? album.tracks : [{ title: '', audioURL: '' }]
   tracks.forEach((t) => addTrackRow(t.title, t.audioURL, t.releaseDate))
@@ -121,7 +122,7 @@ export function initAlbumForm() {
         els.submitBtn.textContent = `Uploading track ${done} of ${total}…`
       })
 
-      const releaseDateValue = els.releaseDateInput.value ? new Date(els.releaseDateInput.value) : null
+      const releaseDateValue = dateInputToDate(els.releaseDateInput.value)
 
       const data = {
         title: els.titleInput.value,

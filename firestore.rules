@@ -50,7 +50,12 @@ service cloud.firestore {
     }
 
     match /albums/{albumId} {
-      allow read: if isAuth();
+      // Public "get" (fetch by known ID) powers the shareable release link
+      // at #/release/<id> so anyone can see the countdown/cover/tracklist
+      // without an account. "list" (browsing/querying the whole albums
+      // collection) still requires being signed into the group.
+      allow get: if true;
+      allow list: if isAuth();
       allow create, update, delete: if isOwner();
     }
 

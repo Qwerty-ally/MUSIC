@@ -8,6 +8,7 @@ export const OWNER_CODE = 'ANCHOR#OFFICIAL'
 // for a huge update. The corner badge shows CHANGELOG[0].version, and
 // clicking it opens a page with CHANGELOG[0].notes.
 export const CHANGELOG = [
+  { version: '1.02', date: '2026-08-23', notes: "Fixed a timezone bug where a picked release date could show as a day earlier. Albums now have a shareable public link (grab it from the album's Copy Release Link button) that shows the countdown, cover, and tracklist to anyone — even without an Anchor account." },
   { version: '1.01', date: '2026-08-23', notes: "Songs no longer require audio to be uploaded upfront for a scheduled release — add it later. Songs can now be edited (title, artist, cover, audio, release date), and a released song with no audio yet stays clearly marked as pending instead of silently failing to play." },
   { version: '1.00', date: '2026-08-23', notes: 'Initial release.' },
 ]

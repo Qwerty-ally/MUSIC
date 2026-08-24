@@ -6,7 +6,7 @@ import { escapeHtml, highlightNowPlaying } from './mediaCard.js'
 import { playSong, onTrackChange, getCurrentTrack } from './player.js'
 import { showToast } from './toast.js'
 
-let modal, coverEl, titleEl, typeEl, countdownWrap, tracksEl, ownerActions, editBtn, deleteBtn
+let modal, coverEl, titleEl, typeEl, countdownWrap, tracksEl, ownerActions, editBtn, deleteBtn, copyLinkBtn
 let countdownInterval = null
 let onEditRequested = null
 let currentAlbum = null
@@ -21,9 +21,21 @@ export function initAlbumModal() {
   ownerActions = document.getElementById('album-modal-owner-actions')
   editBtn = document.getElementById('album-modal-edit')
   deleteBtn = document.getElementById('album-modal-delete')
+  copyLinkBtn = document.getElementById('album-modal-copy-link')
 
   document.getElementById('album-modal-close').addEventListener('click', closeAlbumModal)
   modal.addEventListener('click', (e) => { if (e.target === modal) closeAlbumModal() })
+
+  copyLinkBtn.addEventListener('click', async () => {
+    if (!currentAlbum) return
+    const url = `${location.origin}${location.pathname}#/release/${currentAlbum.id}`
+    try {
+      await navigator.clipboard.writeText(url)
+      showToast('Release link copied!', 'success')
+    } catch {
+      window.prompt('Copy this link:', url)
+    }
+  })
 
   editBtn.addEventListener('click', () => {
     const album = currentAlbum

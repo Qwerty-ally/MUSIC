@@ -6,6 +6,7 @@ import { showToast } from './toast.js'
 import { initAlbumForm, resetAlbumForm, populateAlbumFormForEdit } from './albumForm.js'
 import { onAlbumEditRequested } from './albumModal.js'
 import { initPhotoGroupForm, setPhotoGroupTarget } from './photoGroupForm.js'
+import { dateInputToDate, dateToInputValue } from './releaseUtils.js'
 
 const TABS = {
   song: { label: 'Song', collection: 'songs', accept: 'audio/*', fileField: 'audioURL', fileLabel: 'Audio file', useArtist: true, useReleaseDate: true },
@@ -91,7 +92,7 @@ export function populateSongFormForEdit(song) {
   const releaseDate = song.releaseDate
     ? (typeof song.releaseDate.toDate === 'function' ? song.releaseDate.toDate() : new Date(song.releaseDate))
     : null
-  els.releaseDateInput.value = releaseDate ? releaseDate.toISOString().slice(0, 10) : ''
+  els.releaseDateInput.value = dateToInputValue(releaseDate)
 
   els.fileStatus.textContent = existingFileURL ? '✅ Audio attached' : 'No audio yet — add it below'
   els.fileStatus.classList.remove('hidden')
@@ -147,7 +148,7 @@ export function initUploadPage() {
     const { user } = getState()
     const tab = TABS[currentTab]
     const file = els.fileInput.files[0]
-    const releaseDateValue = tab.useReleaseDate && els.releaseDateInput.value ? new Date(els.releaseDateInput.value) : null
+    const releaseDateValue = tab.useReleaseDate ? dateInputToDate(els.releaseDateInput.value) : null
     const isFutureRelease = !!releaseDateValue && releaseDateValue.getTime() > Date.now()
 
     if (!file && !existingFileURL && !isFutureRelease) {

@@ -1,4 +1,5 @@
 import { onAuthChange, signOut } from './auth.js'
+import { showReleasePage, hideReleasePage } from './releasePage.js'
 
 const VIEWS = ['music', 'music-videos', 'live-performances', 'interviews', 'behind-the-scenes', 'albums', 'magazines', 'photo-shoots', 'other', 'upload', 'stats']
 const OWNER_ONLY_ROUTES = ['upload', 'stats']
@@ -6,6 +7,13 @@ const OWNER_ONLY_ROUTES = ['upload', 'stats']
 function currentRoute() {
   const hash = location.hash.replace('#/', '')
   return VIEWS.includes(hash) ? hash : 'music'
+}
+
+// A public release link works with no account — handled entirely outside
+// the normal auth-gated routing below.
+function releaseIdFromHash() {
+  const m = location.hash.match(/^#\/release\/(.+)$/)
+  return m ? decodeURIComponent(m[1]) : null
 }
 
 function showRoute(route, isOwner) {
@@ -29,9 +37,20 @@ export function initRouter() {
   const logoutBtn = document.getElementById('sidebar-logout')
 
   let isOwnerCache = false
+  let hasUserCache = false
 
   onAuthChange(({ user, profile, isOwner }) => {
     isOwnerCache = isOwner
+    hasUserCache = !!user
+
+    if (releaseIdFromHash()) {
+      authView.classList.add('hidden')
+      appView.classList.add('hidden')
+      showReleasePage(releaseIdFromHash())
+      return
+    }
+    hideReleasePage()
+
     if (!user) {
       authView.classList.remove('hidden')
       appView.classList.add('hidden')
@@ -49,7 +68,28 @@ export function initRouter() {
     showRoute(currentRoute(), isOwner)
   })
 
-  window.addEventListener('hashchange', () => showRoute(currentRoute(), isOwnerCache))
+  window.addEventListener('hashchange', () => {
+    const releaseId = releaseIdFromHash()
+    if (releaseId) {
+      authView.classList.add('hidden')
+      appView.classList.add('hidden')
+      showReleasePage(releaseId)
+      return
+    }
+    hideReleasePage()
+
+    // Leaving the release page needs to restore the right top-level view
+    // too (not just the section inside it) since a signed-out visitor
+    // never triggered the auth-view/app-view toggle in the first place.
+    if (!hasUserCache) {
+      authView.classList.remove('hidden')
+      appView.classList.add('hidden')
+      return
+    }
+    authView.classList.add('hidden')
+    appView.classList.remove('hidden')
+    showRoute(currentRoute(), isOwnerCache)
+  })
 
   document.querySelectorAll('.sidebar-link').forEach((link) => {
     link.addEventListener('click', () => { location.hash = `/${link.dataset.route}` })

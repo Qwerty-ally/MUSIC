@@ -26,6 +26,39 @@
     </div>
   </div>
 
+  <!-- ===================== PUBLIC RELEASE PAGE ===================== -->
+  <div id="release-page" class="release-page hidden">
+    <div class="release-page-wrap">
+      <a href="#" id="release-page-home-link" class="release-page-logo">
+        <div class="auth-logo-badge">&#9875;</div>
+        <span>ANCHOR</span>
+      </a>
+
+      <div id="release-page-loading" class="loading-text">Loading&hellip;</div>
+
+      <div id="release-page-content" class="release-page-content hidden">
+        <img id="release-page-cover" class="release-page-cover" src="" alt="" />
+        <p id="release-page-type" class="release-page-type"></p>
+        <h1 id="release-page-title" class="release-page-title"></h1>
+
+        <div id="release-page-countdown" class="album-countdown hidden">
+          <p class="album-countdown-label">Releasing in</p>
+          <div class="album-countdown-timer">
+            <div class="album-countdown-unit"><span id="release-page-cd-days">0</span><small>days</small></div>
+            <div class="album-countdown-unit"><span id="release-page-cd-hours">0</span><small>hrs</small></div>
+            <div class="album-countdown-unit"><span id="release-page-cd-mins">0</span><small>min</small></div>
+            <div class="album-countdown-unit"><span id="release-page-cd-secs">0</span><small>sec</small></div>
+          </div>
+        </div>
+        <p id="release-page-out" class="release-page-out hidden">Out now</p>
+
+        <div id="release-page-tracks" class="album-tracklist"></div>
+      </div>
+
+      <div id="release-page-notfound" class="loading-text hidden">This release doesn't exist or was removed.</div>
+    </div>
+  </div>
+
   <!-- ===================== AUTH VIEW ===================== -->
   <div id="auth-view" class="auth-view">
     <div class="auth-wrap">
@@ -411,6 +444,8 @@
       </div>
 
       <img id="album-modal-cover" class="album-modal-cover" src="" alt="" />
+
+      <button type="button" id="album-modal-copy-link" class="btn-secondary btn-block album-modal-copy-link">&#128279; Copy Release Link</button>
 
       <div id="album-modal-countdown" class="album-countdown hidden">
         <p class="album-countdown-label">Releasing in</p>
