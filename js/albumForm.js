@@ -21,7 +21,7 @@ function addTrackRow(title = '', audioURL = '', releaseDate = null) {
       <input type="file" class="album-track-file" accept="audio/*" hidden />
       <span class="album-track-file-status">${audioURL ? '&#9989; Audio attached' : 'Add audio'}</span>
     </label>
-    <input type="date" class="album-track-date" value="${dateStr}" title="Early release date (optional) — leave blank to release with the rest of the album" />
+    <input type="datetime-local" class="album-track-date" value="${dateStr}" title="Early release date/time (optional) — leave blank to release with the rest of the album" />
     <button type="button" class="album-track-remove">&times;</button>
   `
   row.querySelector('.album-track-file').addEventListener('change', (e) => {

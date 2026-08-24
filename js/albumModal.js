@@ -125,7 +125,7 @@ export function openAlbumModal(album) {
         let iconTitle = ''
         if (dateLocked) {
           icon = '&#128274;'
-          iconTitle = `Releases ${getReleaseDate(t.releaseDate ? t : album).toLocaleDateString()}`
+          iconTitle = `Releases ${getReleaseDate(t.releaseDate ? t : album).toLocaleString(undefined, { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}`
         } else if (missingAudio) {
           icon = '&#8987;'
           iconTitle = 'Audio not uploaded yet'

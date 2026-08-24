@@ -10,7 +10,7 @@ import { populateSongFormForEdit } from './uploadPage.js'
 const musicIcon = '<svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>'
 
 function formatReleaseDate(date) {
-  return date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })
+  return date.toLocaleString(undefined, { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
 }
 
 async function deleteSong(song) {

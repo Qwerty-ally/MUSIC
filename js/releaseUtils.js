@@ -11,15 +11,13 @@ export function isUpcoming(item) {
   return !!date && date.getTime() > Date.now()
 }
 
-// <input type="date"> gives a plain "YYYY-MM-DD" string. `new Date(str)`
-// parses that as UTC midnight, which lands on the *previous* day once
-// converted to a negative-UTC-offset timezone (e.g. picking Oct 9 stores
-// Oct 8 8pm EDT). Building the Date from local components instead keeps
-// the picked calendar day intact everywhere it's displayed.
+// <input type="datetime-local"> gives a "YYYY-MM-DDTHH:mm" string with no
+// timezone designator, which `new Date(str)` correctly parses as *local*
+// time per spec (unlike a bare "YYYY-MM-DD" date, which parses as UTC
+// midnight and can land on the previous local day — the bug this replaced).
 export function dateInputToDate(value) {
   if (!value) return null
-  const [y, m, d] = value.split('-').map(Number)
-  return new Date(y, m - 1, d)
+  return new Date(value)
 }
 
 export function dateToInputValue(date) {
@@ -27,5 +25,7 @@ export function dateToInputValue(date) {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
+  const hh = String(date.getHours()).padStart(2, '0')
+  const mm = String(date.getMinutes()).padStart(2, '0')
+  return `${y}-${m}-${d}T${hh}:${mm}`
 }

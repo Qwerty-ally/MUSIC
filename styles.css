@@ -892,7 +892,7 @@ input, textarea {
 .album-track-file-label:hover .album-track-file-status { background: #3a3a3a; color: #fff; }
 
 .album-track-row-input .album-track-date {
-  flex: 0 0 132px;
+  flex: 0 0 190px;
   color-scheme: dark;
 }
 
